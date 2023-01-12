@@ -104,7 +104,7 @@ resource "random_password" "mastodon_redis_secret_random" {
 resource "helm_release" "mastodon" {
   name              = var.name
   namespace         = kubernetes_namespace.mastodon.id
-  repository        = "./charts"
+  repository        = "${path.module}/charts"
   chart             = "mastodon"
   dependency_update = true # TODO: Remove this once the public chart is updated
   version           = var.helm_chart_version
