@@ -65,6 +65,7 @@ resource "google_sql_database" "mastodon_sql_database" {
   instance = module.sql_db.instance_name
 }
 
+# TODO: Make a PR to this module as it automatically prefixes the secret name with "-gitlab-"
 module "mastodon_db_pass" {
   source          = "sparkfabrik/gke-gitlab/sparkfabrik//modules/secret_manager"
   version         = "2.14.0"
