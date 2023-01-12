@@ -30,8 +30,8 @@ For a total of:
 
 ## Using Redis in GKE
 
-1.  Redis master - "0.250 CPU / 512MB" - **8$/monthly**
-2.  Redis replicas 3 x "0.250 CPU / 512MB" on Spot nodes - **7$/Monthly**
+1.  Redis master - "0.250 CPU / 512MB" - **8$**
+2.  Redis replicas 3 x 0.250 CPU / 512MB on Spot nodes - **7$**
 
 For a total of:
 
@@ -72,12 +72,14 @@ For a total of:
 | <a name="input_app_create_admin"></a> [app\_create\_admin](#input\_app\_create\_admin) | Create admin account | `bool` | `false` | no |
 | <a name="input_app_existing_secret_name"></a> [app\_existing\_secret\_name](#input\_app\_existing\_secret\_name) | Mastodon existing secret name | `string` | `null` | no |
 | <a name="input_app_helm_additional_values"></a> [app\_helm\_additional\_values](#input\_app\_helm\_additional\_values) | Additional values to pass to the helm | `string` | `""` | no |
-| <a name="input_app_keys"></a> [app\_keys](#input\_app\_keys) | Mastodon secret keys | `set(string)` | <pre>[<br>  "secret_key_base",<br>  "otp_secret",<br>  "vapid_private_key",<br>  "vapid_public_key"<br>]</pre> | no |
+| <a name="input_app_keys"></a> [app\_keys](#input\_app\_keys) | Mastodon secret keys | `set(string)` | <pre>[<br>  "secret_key_base",<br>  "otp_secret"<br>]</pre> | no |
 | <a name="input_app_locale"></a> [app\_locale](#input\_app\_locale) | Mastodon locale | `string` | `"en"` | no |
 | <a name="input_app_s3_existing_secret"></a> [app\_s3\_existing\_secret](#input\_app\_s3\_existing\_secret) | S3 existing secret name | `string` | `null` | no |
 | <a name="input_app_smtp_existing_secret"></a> [app\_smtp\_existing\_secret](#input\_app\_smtp\_existing\_secret) | SMTP existing secret name | `string` | `null` | no |
 | <a name="input_app_smtp_password"></a> [app\_smtp\_password](#input\_app\_smtp\_password) | SMTP password | `string` | `null` | no |
 | <a name="input_app_smtp_username"></a> [app\_smtp\_username](#input\_app\_smtp\_username) | SMTP username | `string` | `null` | no |
+| <a name="input_app_vapid_private_key"></a> [app\_vapid\_private\_key](#input\_app\_vapid\_private\_key) | Mastodon vapid private key | `string` | `null` | no |
+| <a name="input_app_vapid_public_key"></a> [app\_vapid\_public\_key](#input\_app\_vapid\_public\_key) | Mastodon vapid public key | `string` | `null` | no |
 | <a name="input_bucket_force_destroy"></a> [bucket\_force\_destroy](#input\_bucket\_force\_destroy) | Force destroy bucket | `bool` | `false` | no |
 | <a name="input_bucket_location"></a> [bucket\_location](#input\_bucket\_location) | Bucket location | `string` | n/a | yes |
 | <a name="input_bucket_storage_class"></a> [bucket\_storage\_class](#input\_bucket\_storage\_class) | The Storage Class of the new bucket. | `string` | `null` | no |

@@ -180,7 +180,7 @@ variable "cloudsql_pgsql_version" {
 variable "app_keys" {
   type        = set(string)
   description = "Mastodon secret keys"
-  default     = (["secret_key_base", "otp_secret", "vapid_private_key", "vapid_public_key"])
+  default     = (["secret_key_base", "otp_secret"])
 }
 
 variable "app_create_admin" {
@@ -235,6 +235,18 @@ variable "app_smtp_existing_secret" {
 variable "app_existing_secret_name" {
   type        = string
   description = "Mastodon existing secret name"
+  default     = null
+}
+
+variable "app_vapid_public_key" {
+  type        = string
+  description = "Mastodon vapid public key"
+  default     = null
+}
+
+variable "app_vapid_private_key" {
+  type        = string
+  description = "Mastodon vapid private key"
   default     = null
 }
 

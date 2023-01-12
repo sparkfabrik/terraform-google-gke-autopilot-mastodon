@@ -13,6 +13,8 @@ This module is provided without any kind of warranty and is AGPL3 licensed.
 
 ## Pricing model
 
+> TODO: Pricing should be still finalized.
+
 At the moment of writing, the architecture is composed of the following components:
 
 ## Using Redis in Memorystore
@@ -37,7 +39,7 @@ For a total of:
 - GKE Autopilot free-tier: **65$/monthly**
 - GKE Autopilot: **135$/monthly**
 
-> NOTE: Elasticsearch integration is not yet finished.
+> TODO: Elasticsearch integration is not yet integrated here.
 
 [1]: https://cloud.google.com/kubernetes-engine/pricing#cluster_management_fee_and_free_tier
 [2]: https://cloud.google.com/sql/pricing

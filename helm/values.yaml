@@ -14,13 +14,17 @@ mastodon:
   smtp:
     existingSecret: ${MASTODON_SMTP_EXISTING_SECRET}
   secrets:
-    existingSecret: ${MASTODON_APP_EXISTING_SECRET_NAME}
+    secret_key_base: ${MASTODON_SECRET_KEY_BASE}
+    otp_secret: ${MASTODON_OTP_SECRET}
+    vapid:
+      private_key: ${MASTODON_VAPID_PRIVATE_KEY}
+      public_key: ${MASTODON_VAPID_PUBLIC_KEY}
   streaming:
     replicas: 2
   web:
     replicas: 2
   worker:
-    replicas: 1
+    replicas: 2
 
 ingress:
   enabled: true
