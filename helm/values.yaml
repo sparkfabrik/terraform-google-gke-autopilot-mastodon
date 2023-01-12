@@ -24,7 +24,7 @@ ingress:
   hosts:
     - host: ${MASTODON_LOCAL_DOMAIN}
       paths:
-        - path: '/'
+        - path: "/"
   tls: [] # We don't need this as it's managed by managed-certificates.
 
 # ref: https://github.com/bitnami/charts/tree/main/bitnami/redis#parameters
@@ -36,6 +36,7 @@ redis:
 
 # ref: https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch#parameters
 elasticsearch:
+  enabled: false
   sysctlImage:
     enabled: false # THIS IS NOT COMPATIBLE WITH GKE AUTOPILOT.
   master:
@@ -56,8 +57,11 @@ postgresql:
     username: ${MASTODON_POSTGRES_USER}
     existingSecret: ${MASTODON_POSTGRES_SECRET_NAME}
 
-elasticsearch:
-  enabled: false
-
 service:
   type: NodePort
+
+# Set the minimum resources as default for all pods: https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-resource-requests#min-max-requests
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi

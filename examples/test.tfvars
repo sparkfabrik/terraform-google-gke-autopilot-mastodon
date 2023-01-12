@@ -3,7 +3,7 @@ domain     = "foobar.example.com"
 name       = "foobar-mastodon"
 
 # Kubernetes
-authenticator_security_group = "gke-security-groups@example.com"
+gke_authenticator_security_group = "gke-security-groups@example.com"
 
 # Storage
 bucket_location = "europe-west1"

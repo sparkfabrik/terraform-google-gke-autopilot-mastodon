@@ -12,27 +12,27 @@ locals {
 }
 
 module "gke" {
-  source                          = "terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster"
-  version                         = "24.1.0"
-  project_id                      = var.project_id
-  name                            = "${var.name}-gke"
-  region                          = var.region
-  zones                           = var.zones
-  network                         = module.vpc.network_name
-  subnetwork                      = module.vpc.subnets_names[0]
-  ip_range_pods                   = element(module.vpc.subnets_secondary_ranges[0][*].range_name, 0)
-  ip_range_services               = element(module.vpc.subnets_secondary_ranges[0][*].range_name, 1)
-  maintenance_start_time          = var.gke_maintenance_start_time
-  maintenance_end_time            = var.gke_maintenance_end_time
-  maintenance_recurrence          = var.gke_maintenance_recurrence
-  datapath_provider               = var.gke_datapath_provider
-  authenticator_security_group    = var.authenticator_security_group
-  horizontal_pod_autoscaling      = true
-  enable_private_endpoint         = false
-  enable_private_nodes            = true
-  enable_vertical_pod_autoscaling = true
-  enable_cost_allocation          = true
-  cluster_resource_labels         = local.gcp_default_labels
+  source                           = "terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster"
+  version                          = "24.1.0"
+  project_id                       = var.project_id
+  name                             = "${var.name}-gke"
+  region                           = var.region
+  gke_zone                         = var.gke_zone
+  network                          = module.vpc.network_name
+  subnetwork                       = module.vpc.subnets_names[0]
+  ip_range_pods                    = element(module.vpc.subnets_secondary_ranges[0][*].range_name, 0)
+  ip_range_services                = element(module.vpc.subnets_secondary_ranges[0][*].range_name, 1)
+  maintenance_start_time           = var.gke_maintenance_start_time
+  maintenance_end_time             = var.gke_maintenance_end_time
+  maintenance_recurrence           = var.gke_maintenance_recurrence
+  datapath_provider                = var.gke_datapath_provider
+  gke_authenticator_security_group = var.gke_authenticator_security_group
+  horizontal_pod_autoscaling       = true
+  enable_private_endpoint          = false
+  enable_private_nodes             = true
+  enable_vertical_pod_autoscaling  = true
+  enable_cost_allocation           = true
+  cluster_resource_labels          = local.gcp_default_labels
 }
 
 resource "kubernetes_namespace" "mastodon" {

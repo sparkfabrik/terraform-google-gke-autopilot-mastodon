@@ -1,7 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
 # Terraform GKE Autopilot mastodon module
 
-![tflint status](https://github.com/sparkfabrik/terraform-sparkfabrik-gitlab-runner-gke/actions/workflows/tflint.yml/badge.svg?branch=main)
+[![Lint](https://github.com/sparkfabrik/terraform-sparkfabrik-gke-autopilot-mastodon/actions/workflows/tflint.yml/badge.svg)](https://github.com/sparkfabrik/terraform-sparkfabrik-gke-autopilot-mastodon/actions/workflows/tflint.yml)
 
 This is a Terraform module to install and configure a Mastodon instance in a GKE Autopilot cluster
 using the official [GitLab Runner Helm Chart](https://gitlab.com/gitlab-org/charts/gitlab-runner).
@@ -41,7 +41,6 @@ This module is provided without any kind of warranty and is AGPL3 licensed.
 | <a name="input_app_locale"></a> [app\_locale](#input\_app\_locale) | Mastodon locale | `string` | `"en"` | no |
 | <a name="input_app_s3_existing_secret"></a> [app\_s3\_existing\_secret](#input\_app\_s3\_existing\_secret) | S3 existing secret name | `string` | `null` | no |
 | <a name="input_app_smtp_existing_secret"></a> [app\_smtp\_existing\_secret](#input\_app\_smtp\_existing\_secret) | SMTP existing secret name | `string` | `null` | no |
-| <a name="input_authenticator_security_group"></a> [authenticator\_security\_group](#input\_authenticator\_security\_group) | The security group to allow access to the cluster | `string` | n/a | yes |
 | <a name="input_bucket_force_destroy"></a> [bucket\_force\_destroy](#input\_bucket\_force\_destroy) | Force destroy bucket | `bool` | `false` | no |
 | <a name="input_bucket_location"></a> [bucket\_location](#input\_bucket\_location) | Bucket location | `string` | n/a | yes |
 | <a name="input_bucket_storage_class"></a> [bucket\_storage\_class](#input\_bucket\_storage\_class) | The Storage Class of the new bucket. | `string` | `null` | no |
@@ -57,10 +56,12 @@ This module is provided without any kind of warranty and is AGPL3 licensed.
 | <a name="input_cloudsql_zone"></a> [cloudsql\_zone](#input\_cloudsql\_zone) | Cloudsql | `string` | n/a | yes |
 | <a name="input_domain"></a> [domain](#input\_domain) | This is the unique identifier of your server in the network. It cannot be safely changed later, as changing it will cause remote servers to confuse your existing accounts with entirely new ones. It has to be the domain name you are running the server under (without the protocol part, e.g. just example.com). | `string` | n/a | yes |
 | <a name="input_gcp_default_labels"></a> [gcp\_default\_labels](#input\_gcp\_default\_labels) | Default labels to apply to all resources | `map(string)` | `null` | no |
+| <a name="input_gke_authenticator_security_group"></a> [gke\_authenticator\_security\_group](#input\_gke\_authenticator\_security\_group) | The security group to allow access to the cluster | `string` | n/a | yes |
 | <a name="input_gke_datapath_provider"></a> [gke\_datapath\_provider](#input\_gke\_datapath\_provider) | The GKE datapath provider to use | `string` | `"ADVANCED_DATAPATH"` | no |
 | <a name="input_gke_maintenance_end_time"></a> [gke\_maintenance\_end\_time](#input\_gke\_maintenance\_end\_time) | The end time for the maintenance window | `string` | `"1970-01-01T04:00:00Z"` | no |
 | <a name="input_gke_maintenance_recurrence"></a> [gke\_maintenance\_recurrence](#input\_gke\_maintenance\_recurrence) | The recurrence for the maintenance window | `string` | `"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU"` | no |
 | <a name="input_gke_maintenance_start_time"></a> [gke\_maintenance\_start\_time](#input\_gke\_maintenance\_start\_time) | The start time for the maintenance window | `string` | `"1970-01-01T00:00:00Z"` | no |
+| <a name="input_gke_zone"></a> [gke\_zone](#input\_gke\_zone) | gke\_zone within the region to use this cluster | `list(any)` | <pre>[<br>  "europe-west1-b"<br>]</pre> | no |
 | <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | The version of the helm chart to use | `string` | `"3.0.0"` | no |
 | <a name="input_kubernetes_namespace"></a> [kubernetes\_namespace](#input\_kubernetes\_namespace) | The name of the namespace to deploy the application in | `string` | `"mastodon"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Mastodon project name, it will be used as a prefix for all resources | `string` | n/a | yes |
@@ -68,7 +69,6 @@ This module is provided without any kind of warranty and is AGPL3 licensed.
 | <a name="input_region"></a> [region](#input\_region) | The region to host the cluster in | `string` | `"europe-west1"` | no |
 | <a name="input_smtp_gcp_existing_secret_name"></a> [smtp\_gcp\_existing\_secret\_name](#input\_smtp\_gcp\_existing\_secret\_name) | The name of the gcp secret containing the SMTP credentials. Once installed it creates a secret in the cluster. | `string` | `"smtp"` | no |
 | <a name="input_subnet_ip"></a> [subnet\_ip](#input\_subnet\_ip) | The cidr range of the subnet | `string` | `"10.10.10.0/24"` | no |
-| <a name="input_zones"></a> [zones](#input\_zones) | Zones within the region to use this cluster | `list(any)` | <pre>[<br>  "europe-west1-b"<br>]</pre> | no |
 ## Outputs
 
 | Name | Description |

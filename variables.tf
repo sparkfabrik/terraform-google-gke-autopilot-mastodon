@@ -26,6 +26,12 @@ variable "helm_chart_version" {
   default     = "3.0.0"
 }
 
+variable "gcp_default_labels" {
+  type        = map(string)
+  description = "Default labels to apply to all resources"
+  default     = null
+}
+
 variable "gke_datapath_provider" {
   type        = string
   description = "The GKE datapath provider to use"
@@ -50,24 +56,23 @@ variable "gke_maintenance_recurrence" {
   default     = "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU"
 }
 
-variable "gcp_default_labels" {
-  type        = map(string)
-  description = "Default labels to apply to all resources"
-  default     = null
+variable "gke_authenticator_security_group" {
+  type        = string
+  description = "The security group to allow access to the cluster"
 }
 
-# Kubernetes.
-variable "zones" {
+variable "gke_zone" {
   type        = list(any)
-  description = "Zones within the region to use this cluster"
+  description = "gke_zone within the region to use this cluster"
   default = [
     "europe-west1-b",
   ]
 }
 
-variable "authenticator_security_group" {
+variable "kubernetes_namespace" {
   type        = string
-  description = "The security group to allow access to the cluster"
+  description = "The name of the namespace to deploy the application in"
+  default     = "mastodon"
 }
 
 # Network.
@@ -161,20 +166,13 @@ variable "smtp_gcp_existing_secret_name" {
   default     = "smtp"
 }
 
+# Mastodon instance.
 variable "app_keys" {
   type        = set(string)
   description = "Mastodon secret keys"
   default     = (["secret_key_base", "otp_secret", "vapid_private_key", "vapid_public_key"])
 }
 
-# Kubernetes
-variable "kubernetes_namespace" {
-  type        = string
-  description = "The name of the namespace to deploy the application in"
-  default     = "mastodon"
-}
-
-# Mastodon instance.
 variable "app_create_admin" {
   type        = bool
   description = "Create admin account"
