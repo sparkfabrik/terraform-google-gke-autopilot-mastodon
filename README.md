@@ -41,6 +41,8 @@ This module is provided without any kind of warranty and is AGPL3 licensed.
 | <a name="input_app_locale"></a> [app\_locale](#input\_app\_locale) | Mastodon locale | `string` | `"en"` | no |
 | <a name="input_app_s3_existing_secret"></a> [app\_s3\_existing\_secret](#input\_app\_s3\_existing\_secret) | S3 existing secret name | `string` | `null` | no |
 | <a name="input_app_smtp_existing_secret"></a> [app\_smtp\_existing\_secret](#input\_app\_smtp\_existing\_secret) | SMTP existing secret name | `string` | `null` | no |
+| <a name="input_app_smtp_password"></a> [app\_smtp\_password](#input\_app\_smtp\_password) | SMTP password | `string` | `null` | no |
+| <a name="input_app_smtp_username"></a> [app\_smtp\_username](#input\_app\_smtp\_username) | SMTP username | `string` | `null` | no |
 | <a name="input_bucket_force_destroy"></a> [bucket\_force\_destroy](#input\_bucket\_force\_destroy) | Force destroy bucket | `bool` | `false` | no |
 | <a name="input_bucket_location"></a> [bucket\_location](#input\_bucket\_location) | Bucket location | `string` | n/a | yes |
 | <a name="input_bucket_storage_class"></a> [bucket\_storage\_class](#input\_bucket\_storage\_class) | The Storage Class of the new bucket. | `string` | `null` | no |
@@ -64,10 +66,12 @@ This module is provided without any kind of warranty and is AGPL3 licensed.
 | <a name="input_gke_zone"></a> [gke\_zone](#input\_gke\_zone) | gke\_zone within the region to use this cluster | `list(any)` | <pre>[<br>  "europe-west1-b"<br>]</pre> | no |
 | <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | The version of the helm chart to use | `string` | `"3.0.0"` | no |
 | <a name="input_kubernetes_namespace"></a> [kubernetes\_namespace](#input\_kubernetes\_namespace) | The name of the namespace to deploy the application in | `string` | `"mastodon"` | no |
+| <a name="input_memorystore_redis_enabled"></a> [memorystore\_redis\_enabled](#input\_memorystore\_redis\_enabled) | Enable memorystore redis | `bool` | `true` | no |
+| <a name="input_memorystore_redis_size"></a> [memorystore\_redis\_size](#input\_memorystore\_redis\_size) | The size of the redis instance | `string` | `"1"` | no |
+| <a name="input_memorystore_redis_tier"></a> [memorystore\_redis\_tier](#input\_memorystore\_redis\_tier) | The tier of the redis instance | `string` | `"BASIC"` | no |
 | <a name="input_name"></a> [name](#input\_name) | Mastodon project name, it will be used as a prefix for all resources | `string` | n/a | yes |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The GCP project id to install the P∏ | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The region to host the cluster in | `string` | `"europe-west1"` | no |
-| <a name="input_smtp_gcp_existing_secret_name"></a> [smtp\_gcp\_existing\_secret\_name](#input\_smtp\_gcp\_existing\_secret\_name) | The name of the gcp secret containing the SMTP credentials. Once installed it creates a secret in the cluster. | `string` | `"smtp"` | no |
 | <a name="input_subnet_ip"></a> [subnet\_ip](#input\_subnet\_ip) | The cidr range of the subnet | `string` | `"10.10.10.0/24"` | no |
 ## Outputs
 
@@ -86,6 +90,7 @@ This module is provided without any kind of warranty and is AGPL3 licensed.
 | [google-beta_google_service_networking_connection.private_vpc_connection](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_service_networking_connection) | resource |
 | [google_compute_address.cloud_nat_ip](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_address) | resource |
 | [google_compute_global_address.app_lb_ip](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_global_address) | resource |
+| [google_redis_instance.mastodon_redis](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/redis_instance) | resource |
 | [google_secret_manager_secret.mastodon_secrets](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/secret_manager_secret) | resource |
 | [google_secret_manager_secret_version.mastodon_secrets_values](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/secret_manager_secret_version) | resource |
 | [google_service_account.service_account](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
@@ -98,8 +103,10 @@ This module is provided without any kind of warranty and is AGPL3 licensed.
 | [helm_release.mastodon](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubectl_manifest.gcp_managed_cert](https://registry.terraform.io/providers/gavinbunney/kubectl/latest/docs/resources/manifest) | resource |
 | [kubernetes_namespace.mastodon](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
+| [kubernetes_secret.mastodon_memorystore_redis_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [kubernetes_secret.mastodon_redis_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [kubernetes_secret.mastodon_secrets](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
+| [kubernetes_secret.mastodon_smtp_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [kubernetes_secret.postgresql_mtls_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [kubernetes_secret.s3_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [random_password.mastodon_redis_secret_random](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
@@ -113,7 +120,6 @@ This module is provided without any kind of warranty and is AGPL3 licensed.
 | <a name="module_enabled_google_apis"></a> [enabled\_google\_apis](#module\_enabled\_google\_apis) | terraform-google-modules/project-factory/google//modules/project_services | 14.1.0 |
 | <a name="module_gke"></a> [gke](#module\_gke) | terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster | 24.1.0 |
 | <a name="module_mastodon_db_pass"></a> [mastodon\_db\_pass](#module\_mastodon\_db\_pass) | sparkfabrik/gke-gitlab/sparkfabrik//modules/secret_manager | 2.14.0 |
-| <a name="module_mastodon_smtp_pass_from_gcp_existing_secret"></a> [mastodon\_smtp\_pass\_from\_gcp\_existing\_secret](#module\_mastodon\_smtp\_pass\_from\_gcp\_existing\_secret) | sparkfabrik/gke-gitlab/sparkfabrik//modules/secret_manager | 2.14.0 |
 | <a name="module_sql_db"></a> [sql\_db](#module\_sql\_db) | GoogleCloudPlatform/sql-db/google//modules/postgresql | 13.0.1 |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-google-modules/network/google | 6.0.1 |
 
