@@ -9,14 +9,16 @@ locals {
       MASTODON_LOCAL_DOMAIN : var.domain
       MASTODON_S3_EXISTING_SECRET : var.app_s3_existing_secret != null ? var.app_s3_existing_secret : kubernetes_secret.s3_secret.metadata[0].name
       MASTODON_S3_BUCKET_NAME : google_storage_bucket.bucket.name
-      MASTODON_SMTP_EXISTING_SECRET : var.app_smtp_existing_secret != null ? var.app_smtp_existing_secret : (var.smtp_gcp_existing_secret_name != null ? local.smtp_k8s_secret_name_from_gcp : null)
+      MASTODON_SMTP_EXISTING_SECRET : var.app_smtp_existing_secret != null ? var.app_smtp_existing_secret : kubernetes_secret.mastodon_smtp_secret[0].metadata[0].name
       MASTODON_APP_EXISTING_SECRET_NAME : var.app_existing_secret_name != null ? var.app_existing_secret_name : kubernetes_secret.mastodon_secrets.metadata[0].name
       MASTODON_POSTGRES_HOST : module.sql_db.private_ip_address
       MASTODON_POSTGRES_USER : "mastodon"
       MASTODON_POSTGRES_DB : "mastodon"
       MASTODON_POSTGRES_SECRET_NAME : local.sql_k8s_secret_name
       MASTODON_GLOBAL_IP_NAME : local.mastodon_gcp_app_lb_ip_name
-      MASTODON_REDIS_SECRET_NAME : kubernetes_secret.mastodon_redis_secret.metadata[0].name
+      MASTODON_REDIS_ENABLED : var.memorystore_redis_enabled ? "false" : "false"
+      MASTODON_REDIS_HOSTNAME : var.memorystore_redis_enabled ? google_redis_instance.mastodon_redis[0].host : ""
+      MASTODON_REDIS_SECRET_NAME : var.memorystore_redis_enabled ? kubernetes_secret.mastodon_memorystore_redis_secret[0].metadata[0].name : kubernetes_secret.mastodon_redis_secret[0].metadata[0].name
       NAME : var.name
     }
   )
@@ -28,7 +30,6 @@ locals {
     }
   )
 }
-
 
 locals {
   mastodon_secrets = {
@@ -47,7 +48,7 @@ resource "random_password" "mastodon_secrets_random" {
 resource "google_secret_manager_secret" "mastodon_secrets" {
   for_each  = var.app_keys
   project   = var.project_id
-  secret_id = format("%s-%s", var.project_id, each.key)
+  secret_id = format("%s-%s", var.name, each.key)
 
   replication {
     user_managed {
@@ -74,32 +75,30 @@ resource "kubernetes_secret" "mastodon_secrets" {
 }
 
 # Redis secret.
-resource "random_password" "mastodon_redis_secret_random" {
-  length  = 32
-  special = false
-}
-
-resource "kubernetes_secret" "mastodon_redis_secret" {
+resource "kubernetes_secret" "mastodon_memorystore_redis_secret" {
+  count = var.memorystore_redis_enabled ? 1 : 0
   metadata {
     name      = local.redis_k8s_secret_name
     namespace = kubernetes_namespace.mastodon.id
   }
-  data       = { redis-password = random_password.mastodon_redis_secret_random.result }
+  data       = { redis-password = google_redis_instance.mastodon_redis[0].auth_string }
   depends_on = [kubernetes_namespace.mastodon]
 }
 
-# SMTP existing secret.
-module "mastodon_smtp_pass_from_gcp_existing_secret" {
-  count           = var.smtp_gcp_existing_secret_name != null ? 1 : 0
-  source          = "sparkfabrik/gke-gitlab/sparkfabrik//modules/secret_manager"
-  version         = "2.14.0"
-  project         = var.project_id
-  region          = var.region
-  secret_id       = var.smtp_gcp_existing_secret_name
-  k8s_namespace   = kubernetes_namespace.mastodon.id
-  k8s_secret_name = local.smtp_k8s_secret_name_from_gcp
-  k8s_secret_key  = "password"
-  depends_on      = [kubernetes_namespace.mastodon]
+resource "kubernetes_secret" "mastodon_redis_secret" {
+  count = var.memorystore_redis_enabled ? 0 : 1
+  metadata {
+    name      = local.redis_k8s_secret_name
+    namespace = kubernetes_namespace.mastodon.id
+  }
+  data       = { redis-password = random_password.mastodon_redis_secret_random[0].result }
+  depends_on = [kubernetes_namespace.mastodon]
+}
+
+resource "random_password" "mastodon_redis_secret_random" {
+  count   = var.memorystore_redis_enabled ? 0 : 1
+  length  = 32
+  special = false
 }
 
 resource "helm_release" "mastodon" {
@@ -125,4 +124,16 @@ resource "kubectl_manifest" "gcp_managed_cert" {
   override_namespace = kubernetes_namespace.mastodon.id
 }
 
-
+# Create smtp secret.
+resource "kubernetes_secret" "mastodon_smtp_secret" {
+  count = var.app_smtp_username != null && var.app_smtp_password != null ? 1 : 0
+  metadata {
+    name      = local.smtp_k8s_secret_name
+    namespace = kubernetes_namespace.mastodon.id
+  }
+  data = {
+    username = var.app_smtp_username
+    password = var.app_smtp_password
+  }
+  depends_on = [kubernetes_namespace.mastodon]
+}

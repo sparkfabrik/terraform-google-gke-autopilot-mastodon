@@ -19,5 +19,6 @@ module "enabled_google_apis" {
     "cloudresourcemanager.googleapis.com",
     "servicenetworking.googleapis.com",
     "cloudprofiler.googleapis.com",
+    "redis.googleapis.com"
   ]
 }

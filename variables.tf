@@ -106,6 +106,23 @@ variable "bucket_storage_class" {
   default     = null
 }
 
+# Memorystore redis instance.
+variable "memorystore_redis_enabled" {
+  type        = bool
+  description = "Enable memorystore redis"
+  default     = true
+}
+variable "memorystore_redis_size" {
+  type        = string
+  description = "The size of the redis instance"
+  default     = "1"
+}
+variable "memorystore_redis_tier" {
+  type        = string
+  description = "The tier of the redis instance"
+  default     = "BASIC"
+}
+
 # Cloudsql
 variable "cloudsql_zone" {
   type = string
@@ -159,13 +176,6 @@ variable "cloudsql_pgsql_version" {
   default     = "POSTGRES_14"
 }
 
-# Secrets.
-variable "smtp_gcp_existing_secret_name" {
-  type        = string
-  description = "The name of the gcp secret containing the SMTP credentials. Once installed it creates a secret in the cluster."
-  default     = "smtp"
-}
-
 # Mastodon instance.
 variable "app_keys" {
   type        = set(string)
@@ -201,6 +211,19 @@ variable "app_s3_existing_secret" {
   type        = string
   description = "S3 existing secret name"
   default     = null
+}
+
+variable "app_smtp_username" {
+  type        = string
+  description = "SMTP username"
+  default     = null
+}
+
+variable "app_smtp_password" {
+  type        = string
+  description = "SMTP password"
+  default     = null
+  sensitive   = true
 }
 
 variable "app_smtp_existing_secret" {
