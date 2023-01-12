@@ -16,9 +16,9 @@ locals {
       MASTODON_POSTGRES_DB : "mastodon"
       MASTODON_POSTGRES_SECRET_NAME : local.sql_k8s_secret_name
       MASTODON_GLOBAL_IP_NAME : local.mastodon_gcp_app_lb_ip_name
-      MASTODON_REDIS_ENABLED : var.memorystore_redis_enabled ? false : true
+      MASTODON_REDIS_ENABLED : var.memorystore_redis_enabled ? "false" : "true"
       MASTODON_REDIS_HOSTNAME : var.memorystore_redis_enabled ? google_redis_instance.mastodon_redis[0].host : ""
-      MASTODON_REDIS_SECRET_NAME : kubernetes_secret.mastodon_memorystore_redis_secret[0].metadata[0].name
+      MASTODON_REDIS_SECRET_NAME : var.memorystore_redis_enabled ? kubernetes_secret.mastodon_memorystore_redis_secret[0].metadata[0].name : kubernetes_secret.mastodon_redis_secret[0].metadata[0].name
       NAME : var.name
     }
   )
@@ -34,7 +34,7 @@ locals {
 locals {
   mastodon_secrets = {
     for key, value in google_secret_manager_secret.mastodon_secrets :
-    upper(key) => google_secret_manager_secret_version.mastodon_secrets_values[key].secret_data
+    upper(key) => value.secret_id
   }
 }
 
@@ -108,7 +108,7 @@ resource "helm_release" "mastodon" {
   chart             = "mastodon"
   dependency_update = true # TODO: Remove this once the public chart is updated
   version           = var.helm_chart_version
-  timeout           = 900
+  timeout           = 1800
   values            = trimspace(var.app_helm_additional_values) != "" ? [local.mastodon_release_helm_values, var.app_helm_additional_values] : [local.mastodon_release_helm_values]
   depends_on = [
     module.gke,
