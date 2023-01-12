@@ -97,7 +97,7 @@ resource "kubernetes_secret" "mastodon_redis_secret" {
 
 resource "random_password" "mastodon_redis_secret_random" {
   count   = var.memorystore_redis_enabled ? 0 : 1
-  length  = 32
+  length  = 64
   special = false
 }
 
