@@ -1,6 +1,6 @@
-Terraform GKE module
+# Terraform GKE Autopilot mastodon module
 
-![tflint status](https://github.com/sparkfabrik/terraform-sparkfabrik-gitlab-runner-gke/actions/workflows/tflint.yml/badge.svg?branch=main)
+[![Lint](https://github.com/sparkfabrik/terraform-sparkfabrik-gke-autopilot-mastodon/actions/workflows/tflint.yml/badge.svg)](https://github.com/sparkfabrik/terraform-sparkfabrik-gke-autopilot-mastodon/actions/workflows/tflint.yml)
 
 This is a Terraform module to install and configure a Mastodon instance in a GKE Autopilot cluster
 using the official [GitLab Runner Helm Chart](https://gitlab.com/gitlab-org/charts/gitlab-runner).

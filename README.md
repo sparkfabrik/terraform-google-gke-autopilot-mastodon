@@ -1,5 +1,5 @@
 <!-- BEGIN_TF_DOCS -->
-Terraform GKE module
+# Terraform GKE Autopilot mastodon module
 
 ![tflint status](https://github.com/sparkfabrik/terraform-sparkfabrik-gitlab-runner-gke/actions/workflows/tflint.yml/badge.svg?branch=main)
 
