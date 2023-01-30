@@ -1,0 +1,63 @@
+mastodon:
+  createAdmin:
+    enabled: ${MASTODON_CREATE_ADMIN}
+    username: ${MASTODON_ADMIN_USERNAME}
+    email: ${MASTODON_ADMIN_EMAIL}
+  locale: ${MASTODON_LOCALE}
+  local_domain: ${MASTODON_LOCAL_DOMAIN}
+  s3:
+    enabled: true
+    bucket: ${MASTODON_S3_BUCKET_NAME}
+    existingSecret: ${MASTODON_S3_EXISTING_SECRET}
+    endpoint: https://storage.googleapis.com
+  smtp:
+    existingSecret: ${MASTODON_SMTP_EXISTING_SECRET}
+  secrets:
+    existingSecret: ${MASTODON_APP_EXISTING_SECRET_NAME}
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: ${MASTODON_GLOBAL_IP_NAME}
+    networking.gke.io/managed-certificates: ${NAME}-managed-certificate
+    kubernetes.io/ingress.class: "gce"
+  hosts:
+    - host: ${MASTODON_LOCAL_DOMAIN}
+      paths:
+        - path: '/'
+  tls: [] # We don't need this as it's managed by managed-certificates.
+
+# ref: https://github.com/bitnami/charts/tree/main/bitnami/redis#parameters
+redis:
+  replica:
+    replicaCount: 1
+  auth:
+    existingSecret: ${MASTODON_REDIS_SECRET_NAME}
+
+# ref: https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch#parameters
+elasticsearch:
+  sysctlImage:
+    enabled: false # THIS IS NOT COMPATIBLE WITH GKE AUTOPILOT.
+  master:
+    replicaCount: 1
+  data:
+    replicaCount: 1
+  coordinating:
+    replicaCount: 1
+  ingest:
+    replicaCount: 1
+
+postgresql:
+  enabled: false
+  postgresqlHostname: ${MASTODON_POSTGRES_HOST}
+  postgresqlPort: 5432
+  auth:
+    database: ${MASTODON_POSTGRES_DB}
+    username: ${MASTODON_POSTGRES_USER}
+    existingSecret: ${MASTODON_POSTGRES_SECRET_NAME}
+
+elasticsearch:
+  enabled: false
+
+service:
+  type: NodePort
