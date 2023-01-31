@@ -1,0 +1,21 @@
+name: Checkov
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checkov:
+    runs-on: ubuntu-latest
+    name: checkov-action
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout source code
+      - name: Run Checkov action
+        id: checkov
+          uses: bridgecrewio/checkov-action@master
+          with:
+            config_file: .checkov.yaml
+            directory: .
+            soft_fail: true
+            output_format: github_failed_only

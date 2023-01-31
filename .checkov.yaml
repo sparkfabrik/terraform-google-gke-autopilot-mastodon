@@ -1,0 +1,4 @@
+output: cli
+quiet: true
+directory: .
+framework: terraform
