@@ -104,11 +104,11 @@ resource "random_password" "mastodon_redis_secret_random" {
 resource "helm_release" "mastodon" {
   name              = var.name
   namespace         = kubernetes_namespace.mastodon.id
-  repository        = "./charts"
+  repository        = "${path.module}/charts"
   chart             = "mastodon"
   dependency_update = true # TODO: Remove this once the public chart is updated
   version           = var.helm_chart_version
-  timeout           = 600
+  timeout           = 900
   values            = trimspace(var.app_helm_additional_values) != "" ? [local.mastodon_release_helm_values, var.app_helm_additional_values] : [local.mastodon_release_helm_values]
   depends_on = [
     module.gke,
