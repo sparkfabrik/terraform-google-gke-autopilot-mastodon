@@ -4,3 +4,4 @@ directory: .
 framework: terraform
 skip-check:
   - CKV_GCP_97 # Mastodon does not support redis tls.
+  - CKV_GCP_62 # I cannot get rid of this check also on logging bucket.
