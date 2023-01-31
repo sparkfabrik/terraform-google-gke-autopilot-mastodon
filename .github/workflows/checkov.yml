@@ -1,0 +1,24 @@
+name: Checkov
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checkov:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout source code
+      - name: Run Checkov action
+        id: checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          config_file: .checkov.yaml
+          directory: .
+          output_format: github_failed_only

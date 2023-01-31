@@ -9,6 +9,21 @@ resource "google_storage_bucket" "bucket" {
   versioning {
     enabled = var.bucket_versioning
   }
+  logging {
+    log_bucket = google_storage_bucket.log_bucket.name
+  }
+}
+
+resource "google_storage_bucket" "logging" {
+  name                        = "${var.name}-logs"
+  project                     = var.project_id
+  location                    = var.bucket_location
+  storage_class               = var.bucket_storage_class
+  uniform_bucket_level_access = true
+  labels                      = local.gcp_default_labels
+  versioning {
+    enabled = true
+  }
 }
 
 resource "google_storage_bucket_iam_member" "bucket_members" {
