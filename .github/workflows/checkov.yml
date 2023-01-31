@@ -21,5 +21,4 @@ jobs:
         with:
           config_file: .checkov.yaml
           directory: .
-          soft_fail: true
           output_format: github_failed_only

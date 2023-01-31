@@ -2,3 +2,5 @@ output: cli
 quiet: true
 directory: .
 framework: terraform
+skip-check:
+  - CKV_GCP_97 # Mastodon does not support redis tls.
