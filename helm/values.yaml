@@ -29,6 +29,8 @@ ingress:
 
 # ref: https://github.com/bitnami/charts/tree/main/bitnami/redis#parameters
 redis:
+  enabled: ${MASTODON_REDIS_ENABLED}
+  hostname: ${MASTODON_REDIS_HOSTNAME}
   replica:
     replicaCount: 1
   auth:
