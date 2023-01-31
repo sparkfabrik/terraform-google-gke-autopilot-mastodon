@@ -6,8 +6,12 @@ on:
 
 jobs:
   checkov:
-    runs-on: ubuntu-latest
-    name: checkov-action
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
     steps:
       - uses: actions/checkout@v2
         name: Checkout source code
