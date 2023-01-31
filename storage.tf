@@ -11,6 +11,7 @@ resource "google_storage_bucket" "bucket" {
   }
   logging {
     log_bucket = google_storage_bucket.log_bucket.name
+  }
 }
 
 resource "google_storage_bucket" "log_bucket" {
