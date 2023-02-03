@@ -14,6 +14,12 @@ mastodon:
     existingSecret: ${MASTODON_SMTP_EXISTING_SECRET}
   secrets:
     existingSecret: ${MASTODON_APP_EXISTING_SECRET_NAME}
+  streaming:
+    replicas: 2
+  web:
+    replicas: 2
+  worker:
+    replicas: 1
 
 ingress:
   enabled: true
@@ -63,7 +69,13 @@ service:
   type: NodePort
 
 # Set the minimum resources as default for all pods: https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-resource-requests#min-max-requests
+# Autopilot requests/limits: https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-resource-requests#min-max-requests
+# Pricing calculator done till now: https://cloud.google.com/products/calculator/#id=aabc9042-8fbd-44e1-90d0-e3477a1f0eaf
+## EUR 25 per 1 month to run only Mastodon pods, on spot VMs, 5 replicas.
 resources:
   requests:
-    cpu: 250m
+    cpu: 500m
     memory: 512Mi
+
+nodeSelector:
+  cloud.google.com/gke-spot: "true"

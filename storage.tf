@@ -14,7 +14,7 @@ resource "google_storage_bucket" "bucket" {
   }
 }
 
-resource "google_storage_bucket" "logging" {
+resource "google_storage_bucket" "log_bucket" {
   name                        = "${var.name}-logs"
   project                     = var.project_id
   location                    = var.bucket_location
