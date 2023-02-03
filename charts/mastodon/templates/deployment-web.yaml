@@ -24,6 +24,7 @@ spec:
         app.kubernetes.io/component: web
         app.kubernetes.io/part-of: rails
     spec:
+      terminationGracePeriodSeconds: 25
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}

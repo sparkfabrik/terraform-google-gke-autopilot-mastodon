@@ -7,5 +7,10 @@ generate-docs:
 	docker run --rm --volume "$$(pwd):/terraform-docs" -w /terraform-docs -u $$(id -u) quay.io/terraform-docs/terraform-docs:0.16.0 markdown table --config .terraform-docs.yml --output-file README.md --output-mode inject .
 
 checkov:
-	docker run -it -v "$$(pwd):/tf" --workdir /tf bridgecrew/checkov
+	docker run -it -v "$$(pwd):/tf" -w /tf bridgecrew/checkov
 
+trivy:
+	docker run -it -v "$$(pwd):/tf" -w /tf aquasec/trivy config /tf/sql.tf
+
+tfsec:
+	docker run --rm -it -v "$$(pwd):/tf" -w /tf aquasec/tfsec .
