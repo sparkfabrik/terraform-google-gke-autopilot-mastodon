@@ -30,8 +30,8 @@ For a total of:
 
 ## Using Redis in GKE
 
-1.  Redis master - "0.250 CPU / 512MB" - **8$**
-2.  Redis replicas 3 x 0.250 CPU / 512MB on Spot nodes - **7$**
+1.  Redis master - "0.250 CPU / 512MB" - **8$/monthly**
+2.  Redis replicas 3 x 0.250 CPU / 512MB on Spot nodes - **7$/Monthly**
 
 For a total of:
 
