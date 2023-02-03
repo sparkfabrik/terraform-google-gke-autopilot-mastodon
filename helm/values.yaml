@@ -39,7 +39,19 @@ redis:
   enabled: ${MASTODON_REDIS_ENABLED}
   hostname: ${MASTODON_REDIS_HOSTNAME}
   replica:
-    replicaCount: 1
+    replicaCount: 3
+    nodeSelector:
+      cloud.google.com/gke-spot: "true"
+    resources:
+      requests:
+        cpu: 250m
+        memory: 512Mi
+  # Keep the master on a standard node.
+  master:
+    resources:
+      requests:
+        cpu: 250m
+        memory: 512Mi
   auth:
     existingSecret: ${MASTODON_REDIS_SECRET_NAME}
 
