@@ -3,7 +3,7 @@ resource "google_storage_bucket" "bucket" {
   project                     = var.project_id
   location                    = var.bucket_location
   storage_class               = var.bucket_storage_class
-  uniform_bucket_level_access = true
+  uniform_bucket_level_access = false
   labels                      = local.gcp_default_labels
   force_destroy               = var.bucket_force_destroy
   versioning {
@@ -19,7 +19,7 @@ resource "google_storage_bucket" "log_bucket" {
   project                     = var.project_id
   location                    = var.bucket_location
   storage_class               = var.bucket_storage_class
-  uniform_bucket_level_access = true
+  uniform_bucket_level_access = false
   labels                      = local.gcp_default_labels
   versioning {
     enabled = true

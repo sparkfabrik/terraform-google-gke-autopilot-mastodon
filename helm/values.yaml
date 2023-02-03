@@ -10,6 +10,7 @@ mastodon:
     bucket: ${MASTODON_S3_BUCKET_NAME}
     existingSecret: ${MASTODON_S3_EXISTING_SECRET}
     endpoint: https://storage.googleapis.com
+    hostname: storage.googleapis.com
   smtp:
     existingSecret: ${MASTODON_SMTP_EXISTING_SECRET}
   secrets:

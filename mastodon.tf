@@ -34,7 +34,7 @@ locals {
 locals {
   mastodon_secrets = {
     for key, value in google_secret_manager_secret.mastodon_secrets :
-    upper(key) => value.secret_id
+    upper(key) => google_secret_manager_secret_version.mastodon_secrets_values[key].secret_data
   }
 }
 
