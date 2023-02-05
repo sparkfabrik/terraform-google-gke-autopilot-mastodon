@@ -56,18 +56,43 @@ redis:
     existingSecret: ${MASTODON_REDIS_SECRET_NAME}
 
 # ref: https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch#parameters
+## See: https://github.com/bitnami/charts/issues/5641 - https://github.com/bitnami/charts/issues/6694
+### Requests are made by sampling an empty installation, tweak them according to your needs.
 elasticsearch:
   enabled: false
   sysctlImage:
     enabled: false # THIS IS NOT COMPATIBLE WITH GKE AUTOPILOT.
+  extraConfig:
+    index.store.type: niofs
+    node.store.allow_mmap: false
   master:
-    replicaCount: 1
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    nodeSelector:
+      cloud.google.com/gke-spot: "true"
+    terminationGracePeriodSeconds: 25
   data:
-    replicaCount: 1
+    requests:
+      cpu: 500m
+      memory: 2048Mi
+    nodeSelector:
+      cloud.google.com/gke-spot: "true"
+    terminationGracePeriodSeconds: 25
   coordinating:
-    replicaCount: 1
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    nodeSelector:
+      cloud.google.com/gke-spot: "true"
+    terminationGracePeriodSeconds: 25
   ingest:
-    replicaCount: 1
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    nodeSelector:
+      cloud.google.com/gke-spot: "true"
+    terminationGracePeriodSeconds: 25
 
 postgresql:
   enabled: false
