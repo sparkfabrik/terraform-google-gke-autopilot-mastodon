@@ -68,36 +68,41 @@ elasticsearch:
   master:
     requests:
       cpu: 1000m
-      memory: 1024Mi
-    heapSize: 512m
+      memory: 1536Mi
+    heapSize: 768m
     nodeSelector:
       cloud.google.com/gke-spot: "true"
     terminationGracePeriodSeconds: 25
+    replicaCount: 1
   data:
     requests:
       cpu: 1000m
-      memory: 1024Mi
-    heapSize: 512m
+      memory: 1536Mi
+    heapSize: 768m
     nodeSelector:
       cloud.google.com/gke-spot: "true"
     terminationGracePeriodSeconds: 25
+    replicaCount: 1
   coordinating:
     requests:
       cpu: 1000m
       memory: 1024Mi
-    heapSize: 256m
+    heapSize: 512m
+    replicaCount: 1
     nodeSelector:
       cloud.google.com/gke-spot: "true"
     terminationGracePeriodSeconds: 25
+    replicaCount: 1
   ingest:
     requests:
       cpu: 1000m
-      memory: 1024Mi
-    heapSize: 512m
+      memory: 1536Mi
+    heapSize: 768m
+    replicaCount: 1
     nodeSelector:
       cloud.google.com/gke-spot: "true"
     terminationGracePeriodSeconds: 25
-
+    replicaCount: 1
 postgresql:
   enabled: false
   postgresqlHostname: ${MASTODON_POSTGRES_HOST}
