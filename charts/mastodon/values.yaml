@@ -92,24 +92,24 @@ mastodon:
     #   cpu: 250m
     #   memory: 512Mi
     workers:
-    - name: all-queues
-      # -- Number of threads / parallel sidekiq jobs that are executed per Pod
-      concurrency: 25
-      # -- Number of Pod replicas deployed by the Deployment
-      replicas: 1
-      # -- Resources for this specific deployment to allow optimised scaling, overwrites .Values.mastodon.sidekiq.resources
-      resources: {}
-      # -- Affinity for this specific deployment, overwrites .Values.affinity and .Values.mastodon.sidekiq.affinity
-      affinity: {}
-      # -- Sidekiq queues for Mastodon that are handled by this worker. See https://docs.joinmastodon.org/admin/scaling/#concurrency
-      # See https://github.com/mperham/sidekiq/wiki/Advanced-Options#queues for how to weight queues as argument
-      queues:
-        - default,8
-        - push,6
-        - ingress,4
-        - mailers,2
-        - pull
-        - scheduler # Make sure the scheduler queue only exists once and with a worker that has 1 replica.
+      - name: all-queues
+        # -- Number of threads / parallel sidekiq jobs that are executed per Pod
+        concurrency: 25
+        # -- Number of Pod replicas deployed by the Deployment
+        replicas: 1
+        # -- Resources for this specific deployment to allow optimised scaling, overwrites .Values.mastodon.sidekiq.resources
+        resources: {}
+        # -- Affinity for this specific deployment, overwrites .Values.affinity and .Values.mastodon.sidekiq.affinity
+        affinity: {}
+        # -- Sidekiq queues for Mastodon that are handled by this worker. See https://docs.joinmastodon.org/admin/scaling/#concurrency
+        # See https://github.com/mperham/sidekiq/wiki/Advanced-Options#queues for how to weight queues as argument
+        queues:
+          - default,8
+          - push,6
+          - ingress,4
+          - mailers,2
+          - pull
+          - scheduler # Make sure the scheduler queue only exists once and with a worker that has 1 replica.
     #- name: push-pull
     #  concurrency: 50
     #  resources: {}
@@ -132,7 +132,7 @@ mastodon:
     ca_file: /etc/ssl/certs/ca-certificates.crt
     delivery_method: smtp
     domain:
-    enable_starttls: 'auto'
+    enable_starttls: "auto"
     from_address: notifications@example.com
     openssl_verify_mode: peer
     port: 587
@@ -213,7 +213,7 @@ ingress:
   hosts:
     - host: mastodon.local
       paths:
-        - path: '/'
+        - path: "/"
   tls:
     - secretName: mastodon-tls
       hosts:
@@ -267,7 +267,7 @@ redis:
   # you can also specify the name of an existing Secret
   # with a key of redis-password set to the password you want
   # auth:
-    # existingSecret: ""
+  # existingSecret: ""
 
 # @ignored
 service:
@@ -403,7 +403,8 @@ podAnnotations: {}
 jobAnnotations: {}
 
 # -- Default resources for all Deployments and jobs unless overwritten
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -423,3 +424,6 @@ tolerations: []
 
 # -- Affinity for all pods unless overwritten
 affinity: {}
+
+# -- Timezone for all pods unless overwritten
+timezone: UTC
