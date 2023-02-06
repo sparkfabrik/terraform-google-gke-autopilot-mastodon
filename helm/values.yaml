@@ -67,29 +67,33 @@ elasticsearch:
     node.store.allow_mmap: false
   master:
     requests:
-      cpu: 500m
-      memory: 512Mi
+      cpu: 1000m
+      memory: 1024Mi
+    heapSize: 512m
     nodeSelector:
       cloud.google.com/gke-spot: "true"
     terminationGracePeriodSeconds: 25
   data:
     requests:
-      cpu: 500m
-      memory: 2048Mi
+      cpu: 1000m
+      memory: 1024Mi
+    heapSize: 512m
     nodeSelector:
       cloud.google.com/gke-spot: "true"
     terminationGracePeriodSeconds: 25
   coordinating:
     requests:
-      cpu: 500m
-      memory: 512Mi
+      cpu: 1000m
+      memory: 1024Mi
+    heapSize: 256m
     nodeSelector:
       cloud.google.com/gke-spot: "true"
     terminationGracePeriodSeconds: 25
   ingest:
     requests:
-      cpu: 500m
-      memory: 512Mi
+      cpu: 1000m
+      memory: 1024Mi
+    heapSize: 512m
     nodeSelector:
       cloud.google.com/gke-spot: "true"
     terminationGracePeriodSeconds: 25
