@@ -59,7 +59,7 @@ redis:
 ## See: https://github.com/bitnami/charts/issues/5641 - https://github.com/bitnami/charts/issues/6694
 ### Requests are made by sampling an empty installation, tweak them according to your needs.
 elasticsearch:
-  enabled: false
+  enabled: true
   sysctlImage:
     enabled: false # THIS IS NOT COMPATIBLE WITH GKE AUTOPILOT.
   extraConfig:
