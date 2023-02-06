@@ -68,9 +68,9 @@ elasticsearch:
   master:
     resources:
       requests:
-        cpu: 1000m
-        memory: 1536Mi
-    heapSize: 768m
+        cpu: 750m
+        memory: 1024Mi
+    heapSize: 512m
     nodeSelector:
       cloud.google.com/gke-spot: "true"
     terminationGracePeriodSeconds: 25
@@ -78,9 +78,9 @@ elasticsearch:
   data:
     resources:
       requests:
-        cpu: 1000m
-        memory: 1536Mi
-    heapSize: 768m
+        cpu: 750m
+        memory: 1024Mi
+    heapSize: 512m
     nodeSelector:
       cloud.google.com/gke-spot: "true"
     terminationGracePeriodSeconds: 25
@@ -88,8 +88,8 @@ elasticsearch:
   coordinating:
     resources:
       requests:
-        cpu: 1000m
-        memory: 1536Mi
+        cpu: 750m
+        memory: 1024Mi
     heapSize: 512m
     replicaCount: 1
     nodeSelector:
@@ -99,9 +99,9 @@ elasticsearch:
   ingest:
     resources:
       requests:
-        cpu: 1000m
-        memory: 1536Mi
-    heapSize: 768m
+        cpu: 750m
+        memory: 1024Mi
+    heapSize: 512m
     replicaCount: 1
     nodeSelector:
       cloud.google.com/gke-spot: "true"
