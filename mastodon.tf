@@ -10,7 +10,10 @@ locals {
       MASTODON_S3_EXISTING_SECRET : var.app_s3_existing_secret != null ? var.app_s3_existing_secret : kubernetes_secret.s3_secret.metadata[0].name
       MASTODON_S3_BUCKET_NAME : google_storage_bucket.bucket.name
       MASTODON_SMTP_EXISTING_SECRET : var.app_smtp_existing_secret != null ? var.app_smtp_existing_secret : kubernetes_secret.mastodon_smtp_secret[0].metadata[0].name
-      MASTODON_APP_EXISTING_SECRET_NAME : var.app_existing_secret_name != null ? var.app_existing_secret_name : kubernetes_secret.mastodon_secrets.metadata[0].name
+      MASTODON_SECRET_KEY_BASE : local.mastodon_secrets["SECRET_KEY_BASE"]
+      MASTODON_OTP_SECRET : local.mastodon_secrets["OTP_SECRET"]
+      MASTODON_VAPID_PUBLIC_KEY : var.app_vapid_public_key
+      MASTODON_VAPID_PRIVATE_KEY : var.app_vapid_private_key
       MASTODON_POSTGRES_HOST : module.sql_db.private_ip_address
       MASTODON_POSTGRES_USER : "mastodon"
       MASTODON_POSTGRES_DB : "mastodon"
