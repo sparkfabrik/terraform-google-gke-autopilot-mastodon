@@ -1,13 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "mastodon.fullname" . }}-db-migrate
+  name: {{ template "mastodon.migrations.jobname" . }}
   labels:
     {{- include "mastodon.labels" . | nindent 4 }}
 spec:
   template:
     metadata:
-      name: {{ include "mastodon.fullname" . }}-db-migrate
+      name: {{ template "mastodon.migrations.jobname" . }}
       {{- with .Values.jobAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
