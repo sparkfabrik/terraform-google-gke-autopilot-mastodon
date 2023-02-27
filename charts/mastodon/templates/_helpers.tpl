@@ -148,3 +148,15 @@ Find highest number of needed database connections to set DB_POOL variable
 {{- end }}
 {{- $poolSize | quote }}
 {{- end }}
+
+{{/*
+Create a default fully qualified job name.
+Due to the job only being allowed to run once, we add the chart revision so helm
+upgrades don't cause errors trying to create the already ran job.
+Due to the helm delete not cleaning up these jobs, we add a randome value to
+reduce collision
+*/}}
+{{- define "mastodon.migrations.jobname" -}}
+{{- $name := include "mastodon.fullname" . | trunc 55 | trimSuffix "-" -}}
+{{- printf "%s-db-migrate-%d" $name .Release.Revision | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
