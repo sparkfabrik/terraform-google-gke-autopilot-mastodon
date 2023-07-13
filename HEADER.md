@@ -39,7 +39,5 @@ For a total of:
 - GKE Autopilot free-tier: **65$/monthly**
 - GKE Autopilot: **135$/monthly**
 
-> TODO: Elasticsearch integration is not yet integrated here.
-
 [1]: https://cloud.google.com/kubernetes-engine/pricing#cluster_management_fee_and_free_tier
 [2]: https://cloud.google.com/sql/pricing

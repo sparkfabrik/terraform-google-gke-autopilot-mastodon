@@ -3,9 +3,9 @@ output "bucket_name" {
   description = "Mastodon bucket name"
 }
 
-output "service_account" {
+output "bucket_service_account" {
   value       = google_service_account.service_account.email
-  description = "Mastodon service account"
+  description = "Mastodon bucket service account"
 }
 
 output "k8s_bucket_secret_name" {
@@ -21,4 +21,19 @@ output "mastodon_global_ip" {
 output "mastodon_cloud_nat_ip" {
   value       = google_compute_address.cloud_nat_ip.address
   description = "Mastodon cloud NAT IP"
+}
+
+output "gke_kubernetes_version" {
+  value       = module.gke.master_version
+  description = "Mastodon GKE kubernetes version"
+}
+
+output "gke_min_master_version" {
+  value       = module.gke.min_master_version
+  description = "Mastodon GKE min master version"
+}
+
+output "gke_service_account" {
+  value       = module.gke.service_account
+  description = "Mastodon GKE service account"
 }

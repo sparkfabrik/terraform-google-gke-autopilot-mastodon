@@ -32,12 +32,6 @@ variable "gcp_default_labels" {
   default     = null
 }
 
-variable "gke_datapath_provider" {
-  type        = string
-  description = "The GKE datapath provider to use"
-  default     = "ADVANCED_DATAPATH"
-}
-
 variable "gke_maintenance_start_time" {
   type        = string
   description = "The start time for the maintenance window"
@@ -67,6 +61,24 @@ variable "gke_zone" {
   default = [
     "europe-west1-b",
   ]
+}
+
+variable "gke_kubernetes_version" {
+  type        = string
+  description = "The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region."
+  default     = "latest"
+}
+
+variable "gke_workload_config_audit_mode" {
+  type        = string
+  description = "The mode for workload identity config audit"
+  default     = "STANDARD"
+}
+
+variable "gke_workload_vulnerability_mode" {
+  type        = string
+  description = "The mode for workload identity vulnerability"
+  default     = ""
 }
 
 variable "kubernetes_namespace" {
