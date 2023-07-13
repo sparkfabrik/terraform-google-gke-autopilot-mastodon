@@ -14,6 +14,8 @@ This module is provided without any kind of warranty and is AGPL3 licensed.
 
 ## Pricing model
 
+> TODO: Pricing should be still finalized.
+
 At the moment of writing, the architecture is composed of the following components:
 
 ## Using Redis in Memorystore
@@ -38,31 +40,29 @@ For a total of:
 - GKE Autopilot free-tier: **65$/monthly**
 - GKE Autopilot: **135$/monthly**
 
-> NOTE: Elasticsearch integration is not yet finished.
-
 [1]: https://cloud.google.com/kubernetes-engine/pricing#cluster_management_fee_and_free_tier
 [2]: https://cloud.google.com/sql/pricing
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | ~> 4.39.0 |
-| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | ~> 4.48.0 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | ~> 2.5 |
-| <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | >= 1.7.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | ~> 2.12 |
-| <a name="provider_random"></a> [random](#provider\_random) | ~> 3.1 |
+| <a name="provider_google"></a> [google](#provider\_google) | ~> 4.73.0 |
+| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | ~> 4.73.0 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | ~> 2.10.1 |
+| <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | ~> 1.14.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | ~> 2.22.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | ~> 3.5.1 |
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 4.39.0 |
-| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | ~> 4.48.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2.5 |
-| <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | >= 1.7.0 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.12 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.1 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 4.73.0 |
+| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | ~> 4.73.0 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2.10.1 |
+| <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | ~> 1.14.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.22.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.5.1 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -96,10 +96,12 @@ For a total of:
 | <a name="input_domain"></a> [domain](#input\_domain) | This is the unique identifier of your server in the network. It cannot be safely changed later, as changing it will cause remote servers to confuse your existing accounts with entirely new ones. It has to be the domain name you are running the server under (without the protocol part, e.g. just example.com). | `string` | n/a | yes |
 | <a name="input_gcp_default_labels"></a> [gcp\_default\_labels](#input\_gcp\_default\_labels) | Default labels to apply to all resources | `map(string)` | `null` | no |
 | <a name="input_gke_authenticator_security_group"></a> [gke\_authenticator\_security\_group](#input\_gke\_authenticator\_security\_group) | The security group to allow access to the cluster | `string` | n/a | yes |
-| <a name="input_gke_datapath_provider"></a> [gke\_datapath\_provider](#input\_gke\_datapath\_provider) | The GKE datapath provider to use | `string` | `"ADVANCED_DATAPATH"` | no |
+| <a name="input_gke_kubernetes_version"></a> [gke\_kubernetes\_version](#input\_gke\_kubernetes\_version) | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | `string` | `"latest"` | no |
 | <a name="input_gke_maintenance_end_time"></a> [gke\_maintenance\_end\_time](#input\_gke\_maintenance\_end\_time) | The end time for the maintenance window | `string` | `"1970-01-01T04:00:00Z"` | no |
 | <a name="input_gke_maintenance_recurrence"></a> [gke\_maintenance\_recurrence](#input\_gke\_maintenance\_recurrence) | The recurrence for the maintenance window | `string` | `"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU"` | no |
 | <a name="input_gke_maintenance_start_time"></a> [gke\_maintenance\_start\_time](#input\_gke\_maintenance\_start\_time) | The start time for the maintenance window | `string` | `"1970-01-01T00:00:00Z"` | no |
+| <a name="input_gke_workload_config_audit_mode"></a> [gke\_workload\_config\_audit\_mode](#input\_gke\_workload\_config\_audit\_mode) | The mode for workload identity config audit | `string` | `"STANDARD"` | no |
+| <a name="input_gke_workload_vulnerability_mode"></a> [gke\_workload\_vulnerability\_mode](#input\_gke\_workload\_vulnerability\_mode) | The mode for workload identity vulnerability | `string` | `""` | no |
 | <a name="input_gke_zone"></a> [gke\_zone](#input\_gke\_zone) | gke\_zone within the region to use this cluster | `list(any)` | <pre>[<br>  "europe-west1-b"<br>]</pre> | no |
 | <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | The version of the helm chart to use | `string` | `"3.0.0"` | no |
 | <a name="input_kubernetes_namespace"></a> [kubernetes\_namespace](#input\_kubernetes\_namespace) | The name of the namespace to deploy the application in | `string` | `"mastodon"` | no |
@@ -115,10 +117,13 @@ For a total of:
 | Name | Description |
 |------|-------------|
 | <a name="output_bucket_name"></a> [bucket\_name](#output\_bucket\_name) | Mastodon bucket name |
+| <a name="output_bucket_service_account"></a> [bucket\_service\_account](#output\_bucket\_service\_account) | Mastodon bucket service account |
+| <a name="output_gke_kubernetes_version"></a> [gke\_kubernetes\_version](#output\_gke\_kubernetes\_version) | Mastodon GKE kubernetes version |
+| <a name="output_gke_min_master_version"></a> [gke\_min\_master\_version](#output\_gke\_min\_master\_version) | Mastodon GKE min master version |
+| <a name="output_gke_service_account"></a> [gke\_service\_account](#output\_gke\_service\_account) | Mastodon GKE service account |
 | <a name="output_k8s_bucket_secret_name"></a> [k8s\_bucket\_secret\_name](#output\_k8s\_bucket\_secret\_name) | Mastodon k8s bucket secret name |
 | <a name="output_mastodon_cloud_nat_ip"></a> [mastodon\_cloud\_nat\_ip](#output\_mastodon\_cloud\_nat\_ip) | Mastodon cloud NAT IP |
 | <a name="output_mastodon_global_ip"></a> [mastodon\_global\_ip](#output\_mastodon\_global\_ip) | Mastodon global IP |
-| <a name="output_service_account"></a> [service\_account](#output\_service\_account) | Mastodon service account |
 ## Resources
 
 | Name | Type |
@@ -156,7 +161,7 @@ For a total of:
 |------|--------|---------|
 | <a name="module_cloud_nat"></a> [cloud\_nat](#module\_cloud\_nat) | terraform-google-modules/cloud-nat/google | 2.2.1 |
 | <a name="module_enabled_google_apis"></a> [enabled\_google\_apis](#module\_enabled\_google\_apis) | terraform-google-modules/project-factory/google//modules/project_services | 14.1.0 |
-| <a name="module_gke"></a> [gke](#module\_gke) | terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster | 24.1.0 |
+| <a name="module_gke"></a> [gke](#module\_gke) | terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster | ~> 27.0.0 |
 | <a name="module_mastodon_db_pass"></a> [mastodon\_db\_pass](#module\_mastodon\_db\_pass) | sparkfabrik/gke-gitlab/sparkfabrik//modules/secret_manager | 2.14.0 |
 | <a name="module_sql_db"></a> [sql\_db](#module\_sql\_db) | GoogleCloudPlatform/sql-db/google//modules/postgresql | 13.0.1 |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-google-modules/network/google | 6.0.1 |

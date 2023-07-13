@@ -2,29 +2,28 @@ terraform {
   required_version = ">= 1.3"
   required_providers {
     google = {
-      source = "hashicorp/google"
-      # Cause this bug: https://github.com/hashicorp/terraform-provider-google/issues/12804
-      version = "~> 4.39.0"
+      source  = "hashicorp/google"
+      version = "~> 4.73.0"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = "~> 4.48.0"
+      version = "~> 4.73.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 2.12"
+      version = "~> 2.22.0"
     }
     random = {
       source  = "hashicorp/random"
-      version = "~> 3.1"
+      version = "~> 3.5.1"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 2.5"
+      version = "~> 2.10.1"
     }
     kubectl = {
       source  = "gavinbunney/kubectl"
-      version = ">= 1.7.0"
+      version = "~> 1.14.0"
     }
   }
 }

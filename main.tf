@@ -13,7 +13,7 @@ locals {
 
 module "gke" {
   source                          = "terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster"
-  version                         = "24.1.0"
+  version                         = "~> 27.0.0"
   project_id                      = var.project_id
   name                            = "${var.name}-gke"
   region                          = var.region
@@ -25,8 +25,10 @@ module "gke" {
   maintenance_start_time          = var.gke_maintenance_start_time
   maintenance_end_time            = var.gke_maintenance_end_time
   maintenance_recurrence          = var.gke_maintenance_recurrence
-  datapath_provider               = var.gke_datapath_provider
   authenticator_security_group    = var.gke_authenticator_security_group
+  kubernetes_version              = var.gke_kubernetes_version
+  workload_config_audit_mode      = var.gke_workload_config_audit_mode
+  workload_vulnerability_mode     = var.gke_workload_vulnerability_mode
   horizontal_pod_autoscaling      = true
   enable_private_endpoint         = false
   enable_private_nodes            = true
