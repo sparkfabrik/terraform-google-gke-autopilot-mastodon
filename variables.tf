@@ -72,12 +72,30 @@ variable "gke_kubernetes_version" {
 variable "gke_workload_config_audit_mode" {
   type        = string
   description = "The mode for workload identity config audit"
-  default     = "STANDARD"
+  default     = ""
 }
 
 variable "gke_workload_vulnerability_mode" {
   type        = string
   description = "The mode for workload identity vulnerability"
+  default     = ""
+}
+
+variable "gke_create_service_account" {
+  type        = bool
+  description = "Defines if service account specified to run nodes should be created."
+  default     = true
+}
+
+variable "gke_service_account" {
+  type        = string
+  description = "The service account to run nodes as if not overridden in node_pools. The gke_create_service_account variable default value (true) will cause a cluster-specific service account to be created. This service account should already exists and it will be used by the node pools. If you wish to only override the service account name, you can use service_account_name variable."
+  default     = ""
+}
+
+variable "gke_service_account_name" {
+  type        = string
+  description = "The name of the service account that will be created if gke_create_service_account is true. If you wish to use an existing service account, use gke_service_account variable."
   default     = ""
 }
 

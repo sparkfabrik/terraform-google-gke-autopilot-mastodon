@@ -46,23 +46,23 @@ For a total of:
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | ~> 4.73.0 |
-| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | ~> 4.73.0 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | ~> 2.10.1 |
-| <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | ~> 1.14.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | ~> 2.22.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | ~> 3.5.1 |
+| <a name="provider_google"></a> [google](#provider\_google) | >= 4.51.0, < 5.0, !=4.65.0, !=4.65.1 |
+| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | >= 4.51.0, < 5.0, !=4.65.0, !=4.65.1 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | >= 2.10.1 |
+| <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | >= 1.14.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.22 |
+| <a name="provider_random"></a> [random](#provider\_random) | >= 3.5.1 |
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 4.73.0 |
-| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | ~> 4.73.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2.10.1 |
-| <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | ~> 1.14.0 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.22.0 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.5.1 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.51.0, < 5.0, !=4.65.0, !=4.65.1 |
+| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | >= 4.51.0, < 5.0, !=4.65.0, !=4.65.1 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.10.1 |
+| <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | >= 1.14.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.22 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.5.1 |
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -96,11 +96,14 @@ For a total of:
 | <a name="input_domain"></a> [domain](#input\_domain) | This is the unique identifier of your server in the network. It cannot be safely changed later, as changing it will cause remote servers to confuse your existing accounts with entirely new ones. It has to be the domain name you are running the server under (without the protocol part, e.g. just example.com). | `string` | n/a | yes |
 | <a name="input_gcp_default_labels"></a> [gcp\_default\_labels](#input\_gcp\_default\_labels) | Default labels to apply to all resources | `map(string)` | `null` | no |
 | <a name="input_gke_authenticator_security_group"></a> [gke\_authenticator\_security\_group](#input\_gke\_authenticator\_security\_group) | The security group to allow access to the cluster | `string` | n/a | yes |
+| <a name="input_gke_create_service_account"></a> [gke\_create\_service\_account](#input\_gke\_create\_service\_account) | Defines if service account specified to run nodes should be created. | `bool` | `true` | no |
 | <a name="input_gke_kubernetes_version"></a> [gke\_kubernetes\_version](#input\_gke\_kubernetes\_version) | The Kubernetes version of the masters. If set to 'latest' it will pull latest available version in the selected region. | `string` | `"latest"` | no |
 | <a name="input_gke_maintenance_end_time"></a> [gke\_maintenance\_end\_time](#input\_gke\_maintenance\_end\_time) | The end time for the maintenance window | `string` | `"1970-01-01T04:00:00Z"` | no |
 | <a name="input_gke_maintenance_recurrence"></a> [gke\_maintenance\_recurrence](#input\_gke\_maintenance\_recurrence) | The recurrence for the maintenance window | `string` | `"FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU"` | no |
 | <a name="input_gke_maintenance_start_time"></a> [gke\_maintenance\_start\_time](#input\_gke\_maintenance\_start\_time) | The start time for the maintenance window | `string` | `"1970-01-01T00:00:00Z"` | no |
-| <a name="input_gke_workload_config_audit_mode"></a> [gke\_workload\_config\_audit\_mode](#input\_gke\_workload\_config\_audit\_mode) | The mode for workload identity config audit | `string` | `"STANDARD"` | no |
+| <a name="input_gke_service_account"></a> [gke\_service\_account](#input\_gke\_service\_account) | The service account to run nodes as if not overridden in node\_pools. The gke\_create\_service\_account variable default value (true) will cause a cluster-specific service account to be created. This service account should already exists and it will be used by the node pools. If you wish to only override the service account name, you can use service\_account\_name variable. | `string` | `""` | no |
+| <a name="input_gke_service_account_name"></a> [gke\_service\_account\_name](#input\_gke\_service\_account\_name) | The name of the service account that will be created if gke\_create\_service\_account is true. If you wish to use an existing service account, use gke\_service\_account variable. | `string` | `""` | no |
+| <a name="input_gke_workload_config_audit_mode"></a> [gke\_workload\_config\_audit\_mode](#input\_gke\_workload\_config\_audit\_mode) | The mode for workload identity config audit | `string` | `""` | no |
 | <a name="input_gke_workload_vulnerability_mode"></a> [gke\_workload\_vulnerability\_mode](#input\_gke\_workload\_vulnerability\_mode) | The mode for workload identity vulnerability | `string` | `""` | no |
 | <a name="input_gke_zone"></a> [gke\_zone](#input\_gke\_zone) | gke\_zone within the region to use this cluster | `list(any)` | <pre>[<br>  "europe-west1-b"<br>]</pre> | no |
 | <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | The version of the helm chart to use | `string` | `"3.0.0"` | no |

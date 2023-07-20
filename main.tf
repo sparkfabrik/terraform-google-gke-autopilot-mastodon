@@ -29,6 +29,9 @@ module "gke" {
   kubernetes_version              = var.gke_kubernetes_version
   workload_config_audit_mode      = var.gke_workload_config_audit_mode
   workload_vulnerability_mode     = var.gke_workload_vulnerability_mode
+  create_service_account          = var.gke_create_service_account
+  service_account_name            = var.gke_service_account_name
+  service_account                 = var.gke_service_account
   horizontal_pod_autoscaling      = true
   enable_private_endpoint         = false
   enable_private_nodes            = true
