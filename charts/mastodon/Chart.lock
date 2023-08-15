@@ -8,5 +8,8 @@ dependencies:
 - name: redis
   repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
   version: 16.13.2
-digest: sha256:8be2c8069d65f295d0079bdda67c45691370f7bef73393c2e80eedbdd748b9af
-generated: "2023-01-30T11:25:50.109500277Z"
+- name: common
+  repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+  version: 2.8.0
+digest: sha256:989fdd080fcff8710cac6f847d343df208afd3b36768b2e897a5de2cd66a3723
+generated: "2023-08-15T15:57:41.959367654Z"
