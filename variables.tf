@@ -20,12 +20,6 @@ variable "region" {
   default     = "europe-west1"
 }
 
-variable "helm_chart_version" {
-  type        = string
-  description = "The version of the helm chart to use"
-  default     = "3.0.0"
-}
-
 variable "gcp_default_labels" {
   type        = map(string)
   description = "Default labels to apply to all resources"
