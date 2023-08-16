@@ -46,3 +46,24 @@ variable "peertube_buckets" {
     }
   ]
 }
+
+variable "kubernetes_namespace" {
+  type        = string
+  description = "The Kubernetes namespace to deploy to"
+  default     = "peertube"
+}
+
+variable "kubernetes_endpoint" {
+  type        = string
+  description = "The Kubernetes host to connect to"
+}
+
+variable "kubernetes_token" {
+  type        = string
+  description = "The Kubernetes token to use"
+}
+
+variable "kubernetes_ca_certificate" {
+  type        = string
+  description = "The Kubernetes CA certificate to use"
+}
