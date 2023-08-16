@@ -3,9 +3,19 @@ variable "name" {
   description = "Peertube project name, it will be used as a prefix for all resources"
 }
 
+variable "region" {
+  type        = string
+  description = "The region to host the cluster in"
+}
+
 variable "project_id" {
   type        = string
   description = "The project ID to deploy to"
+}
+
+variable "cloudsql_instance_name" {
+  type        = string
+  description = "The name of the Cloud SQL instance to connect to"
 }
 
 variable "bucket_location" {

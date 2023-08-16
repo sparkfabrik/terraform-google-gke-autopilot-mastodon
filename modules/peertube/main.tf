@@ -1,6 +1,7 @@
 locals {
   peertube_default_labels = { "app" = "peertube", "project" = var.name }
   s3_k8s_secret_name      = format("%s-%s", replace(var.name, "_", "-"), "s3-secret")
+  sql_k8s_secret_name     = format("%s-%s", replace(var.name, "_", "-"), "postgres-pwd")
 }
 
 # https://docs.joinpeertube.org/maintain/remote-storage
@@ -76,4 +77,29 @@ resource "kubernetes_secret" "bucket_secret" {
     AWS_SECRET_ACCESS_KEY = google_storage_hmac_key.peertube_bucket_sa_hmac_key.secret
   }
   depends_on = [kubernetes_namespace.peertube]
+}
+
+### Postgresql database.
+resource "google_sql_user" "peertube_sql_user" {
+  name     = "peertube"
+  instance = var.cloudsql_instance_name
+  password = module.peertube_db_pass.secret_value
+}
+
+resource "google_sql_database" "mastodon_sql_database" {
+  name     = "peertube"
+  project  = var.project_id
+  instance = var.cloudsql_instance_name
+}
+
+module "peertube_db_pass" {
+  source          = "sparkfabrik/gke-gitlab/sparkfabrik//modules/secret_manager"
+  version         = "2.17.1"
+  project         = var.project_id
+  region          = var.region
+  secret_id       = ""
+  k8s_namespace   = kubernetes_namespace.peertube.id
+  k8s_secret_name = local.sql_k8s_secret_name
+  k8s_secret_key  = "password"
+  depends_on      = [kubernetes_namespace.peertube]
 }

@@ -1,3 +1,8 @@
+output "region" {
+  value       = var.region
+  description = "Mastodon cloud region"
+}
+
 output "bucket_name" {
   value       = google_storage_bucket.bucket.name
   description = "Mastodon bucket name"
@@ -54,4 +59,9 @@ output "gke_ca_certificate" {
   value       = module.gke.ca_certificate
   description = "Mastodon GKE CA certificate"
   sensitive   = true
+}
+
+output "cloudsql_instance_name" {
+  value       = module.sql_db.instance_name
+  description = "Mastodon CloudSQL DB instance name"
 }
