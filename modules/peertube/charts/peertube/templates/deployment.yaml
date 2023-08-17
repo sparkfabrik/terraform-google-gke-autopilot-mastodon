@@ -31,12 +31,23 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:v{{ .Values.image.tag | default .Chart.AppVersion }}-bullseye"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
-              protocol: TCP
+            - containerPort: 80
+              name: http
+            - containerPort: 443
+              name: https
+            - containerPort: 9000
+              name: peertube
+            - containerPort: 1935
+              name: rtmp
+          # https://docs.joinpeertube.org/install/any-os#peertube-configuration
+          # https://github.com/Chocobozzz/PeerTube/blob/develop/support/docker/production/.env
+          env:
+            - name: PEERTUBE_SECRET
+              # TODO: generate a random secret with "openssl rand -hex 32"
+              value: "fc3f91957b7814654737e9da525bf0c997a8f862589b0a3f2fb7e3823bbc1090"
           livenessProbe:
             httpGet:
               path: /
