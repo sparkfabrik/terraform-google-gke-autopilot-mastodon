@@ -15,9 +15,12 @@ install-nginx-ingress-controller:
 helm-dep-update:
 	helm dependency update .
 
-install-chart:
+install:
 	helm upgrade --install peertube . -f tests/values.yaml
 
-uninstall-chart:
+uninstall:
 	helm uninstall peertube || true
 	kubectl delete pvc data-peertube-postgresql-0 || true
+
+port-forward:
+	kubectl port-forward svc/peertube 8080:80

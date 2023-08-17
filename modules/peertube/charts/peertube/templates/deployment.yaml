@@ -58,9 +58,6 @@ spec:
             - name: PEERTUBE_DB_SSL
               value: "false"
 
-            - name: PEERTUBE_WEBSERVER_HOSTNAME
-              value: peertube.localhost
-
             - name: PEERTUBE_ADMIN_EMAIL
               value: peertube@example.com
 
@@ -70,11 +67,14 @@ spec:
             - name: PEERTUBE_REDIS_AUTH
               value: "peertube"
 
+            - name: PEERTUBE_WEBSERVER_HOSTNAME
+              value: peertube.loc
+
             - name: PEERTUBE_WEBSERVER_HTTPS
               value: "false"
 
             - name: PEERTUBE_WEBSERVER_PORT
-              value: "80"
+              value: "8080"
 
           livenessProbe:
             httpGet:
