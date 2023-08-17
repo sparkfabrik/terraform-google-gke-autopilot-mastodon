@@ -43,22 +43,9 @@ output "gke_service_account" {
   description = "Mastodon GKE service account"
 }
 
-output "gke_endpoint" {
-  value       = module.gke.endpoint
-  description = "Mastodon GKE endpoint"
-  sensitive   = true
-}
-
-output "gke_token" {
-  value       = data.google_client_config.default.access_token
-  description = "Mastodon GKE token"
-  sensitive   = true
-}
-
-output "gke_ca_certificate" {
-  value       = module.gke.ca_certificate
-  description = "Mastodon GKE CA certificate"
-  sensitive   = true
+output "cluster_name" {
+  value       = module.gke.name
+  description = "Mastodon GKE cluster name"
 }
 
 output "cloudsql_instance_name" {

@@ -63,17 +63,7 @@ variable "kubernetes_namespace" {
   default     = "peertube"
 }
 
-variable "kubernetes_endpoint" {
+variable "cluster_name" {
   type        = string
-  description = "The Kubernetes host to connect to"
-}
-
-variable "kubernetes_token" {
-  type        = string
-  description = "The Kubernetes token to use"
-}
-
-variable "kubernetes_ca_certificate" {
-  type        = string
-  description = "The Kubernetes CA certificate to use"
+  description = "The name of the cluster to deploy to"
 }
