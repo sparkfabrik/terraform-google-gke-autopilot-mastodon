@@ -34,28 +34,56 @@ spec:
           image: "{{ .Values.image.repository }}:v{{ .Values.image.tag | default .Chart.AppVersion }}-bullseye"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 80
-              name: http
-            - containerPort: 443
-              name: https
             - containerPort: 9000
               name: peertube
-            - containerPort: 1935
-              name: rtmp
           # https://docs.joinpeertube.org/install/any-os#peertube-configuration
           # https://github.com/Chocobozzz/PeerTube/blob/develop/support/docker/production/.env
+          # https://github.com/Chocobozzz/PeerTube/blob/master/support/docker/production/config/custom-environment-variables.yaml
           env:
             - name: PEERTUBE_SECRET
               # TODO: generate a random secret with "openssl rand -hex 32"
               value: "fc3f91957b7814654737e9da525bf0c997a8f862589b0a3f2fb7e3823bbc1090"
+            - name: PEERTUBE_DB_HOSTNAME
+              value: {{ .Release.Name }}-postgresql
+            - name: POSTGRES_USER
+              value: peertube
+            - name: POSTGRES_PASSWORD
+              value: peertube
+            - name: PEERTUBE_DB_USERNAME
+              value: peertube
+            - name: PEERTUBE_DB_PASSWORD
+              value: peertube
+            - name: POSTGRES_DB
+              value: peertube
+            - name: PEERTUBE_DB_SSL
+              value: "false"
+
+            - name: PEERTUBE_WEBSERVER_HOSTNAME
+              value: peertube.localhost
+
+            - name: PEERTUBE_ADMIN_EMAIL
+              value: peertube@example.com
+
+            - name: PEERTUBE_REDIS_HOSTNAME
+              value: {{ .Release.Name }}-redis-master
+
+            - name: PEERTUBE_REDIS_AUTH
+              value: "peertube"
+
+            - name: PEERTUBE_WEBSERVER_HTTPS
+              value: "false"
+
+            - name: PEERTUBE_WEBSERVER_PORT
+              value: "80"
+
           livenessProbe:
             httpGet:
               path: /
-              port: http
+              port: peertube
           readinessProbe:
             httpGet:
               path: /
-              port: http
+              port: peertube
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

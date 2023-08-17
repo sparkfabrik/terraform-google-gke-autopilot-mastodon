@@ -8,8 +8,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: peertube
       protocol: TCP
-      name: http
+      name: peertube
   selector:
     {{- include "peertube.selectorLabels" . | nindent 4 }}

@@ -12,6 +12,12 @@ install-nginx-ingress-controller:
   	--selector=app.kubernetes.io/component=controller \
   	--timeout=90s
 
-install-chart:
+helm-dep-update:
 	helm dependency update .
-	helm upgrade --install peertube . --set postgres.enabled=true --set postgres.image.tag=12.16.0-debian-11-r5
+
+install-chart:
+	helm upgrade --install peertube . -f tests/values.yaml
+
+uninstall-chart:
+	helm uninstall peertube || true
+	kubectl delete pvc data-peertube-postgresql-0 || true

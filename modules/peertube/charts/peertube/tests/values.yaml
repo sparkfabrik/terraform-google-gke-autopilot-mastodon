@@ -1,0 +1,24 @@
+redis:
+  enabled: true
+  architecture: standalone
+  auth:
+    enabled: true
+    password: peertube
+
+postgresql:
+  enabled: true
+  image:
+    tag: 12.16.0-debian-11-r5
+  auth:
+    postgresPassword: peertube
+    username: peertube
+    password: peertube
+    database: peertube
+  primary:
+    initdb:
+      user: postgres
+      password: peertube
+      scripts:
+        01_create_extensions.sql: |
+          CREATE EXTENSION pg_trgm;
+          CREATE EXTENSION unaccent;
