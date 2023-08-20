@@ -43,6 +43,7 @@ spec:
             - name: PEERTUBE_SECRET
               # TODO: generate a random secret with "openssl rand -hex 32"
               value: "fc3f91957b7814654737e9da525bf0c997a8f862589b0a3f2fb7e3823bbc1090"
+
             - name: PEERTUBE_DB_HOSTNAME
               value: {{ .Release.Name }}-postgresql
             - name: POSTGRES_USER
@@ -74,7 +75,29 @@ spec:
               value: "false"
 
             - name: PEERTUBE_WEBSERVER_PORT
-              value: "8080"
+              value: "9000"
+
+            # Object storage.
+            - name: PEERTUBE_OBJECT_STORAGE_ENABLED
+              value: "true"
+
+            - name: PEERTUBE_OBJECT_STORAGE_ENDPOINT
+              value: {{ .Release.Name }}-minio:9000
+
+            - name: PEERTUBE_OBJECT_STORAGE_ACCESS_KEY
+              value: peertube
+
+            - name: PEERTUBE_OBJECT_STORAGE_CREDENTIALS_ACCESS_KEY_ID
+              value: 1234qwer
+
+            - name: PEERTUBE_OBJECT_STORAGE_CREDENTIALS_SECRET_ACCESS_KEY
+              value: 1234qwer
+
+            - name: PEERTUBE_OBJECT_STORAGE_VIDEOS_BUCKET_NAME
+              value: peertube-web
+
+            - name: PEERTUBE_OBJECT_STORAGE_STREAMING_PLAYLISTS_BUCKET_NAME
+              value: peertube-hsl
 
           livenessProbe:
             httpGet:

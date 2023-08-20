@@ -1,9 +1,38 @@
 redis:
   enabled: true
   architecture: standalone
+  master:
+    persistence:
+      enabled: false
   auth:
     enabled: true
     password: peertube
+
+minio:
+  enabled: true
+  mode: standalone
+  replicas: 1
+  rootUser: peertube
+  rootPassword: peertube
+  persistence:
+    enabled: false
+    size: 1Gi
+  # login issue with port-forward: https://github.com/minio/console/issues/2539
+  environment:
+    MINIO_BROWSER_LOGIN_ANIMATION: "off"
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+  users:
+    - accessKey: 1234qwer
+      secretKey: 1234qwer
+      policy: readwrite
+  buckets:
+    - name: peertube-web
+      policy: none
+    - name: peertube-hls
+      policy: none
 
 postgresql:
   enabled: true
