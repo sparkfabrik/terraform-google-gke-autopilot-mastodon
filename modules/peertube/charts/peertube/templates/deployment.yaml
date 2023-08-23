@@ -39,6 +39,8 @@ spec:
           # https://docs.joinpeertube.org/install/any-os#peertube-configuration
           # https://github.com/Chocobozzz/PeerTube/blob/develop/support/docker/production/.env
           # https://github.com/Chocobozzz/PeerTube/blob/master/support/docker/production/config/custom-environment-variables.yaml
+
+          # HELM CHART: https://github.com/coopgo/peertube-k8s
           env:
             - name: PEERTUBE_SECRET
               # TODO: generate a random secret with "openssl rand -hex 32"
@@ -82,22 +84,36 @@ spec:
               value: "true"
 
             - name: PEERTUBE_OBJECT_STORAGE_ENDPOINT
-              value: {{ .Release.Name }}-minio:9000
+              value: "http://{{ .Release.Name }}-minio:9000"
 
-            - name: PEERTUBE_OBJECT_STORAGE_ACCESS_KEY
-              value: peertube
+            - name: "PEERTUBE_OBJECT_STORAGE_REGION"
+              value: ""
 
-            - name: PEERTUBE_OBJECT_STORAGE_CREDENTIALS_ACCESS_KEY_ID
+            - name: AWS_ACCESS_KEY_ID
               value: 1234qwer
 
-            - name: PEERTUBE_OBJECT_STORAGE_CREDENTIALS_SECRET_ACCESS_KEY
+            - name: AWS_SECRET_ACCESS_KEY
               value: 1234qwer
 
             - name: PEERTUBE_OBJECT_STORAGE_VIDEOS_BUCKET_NAME
               value: peertube-web
 
+            - name: PEERTUBE_OBJECT_STORAGE_VIDEOS_PREFIX
+              value: ""
+
+            - name: PEERTUBE_OBJECT_STORAGE_VIDEOS_BASE_URL
+              value: minio.helm
+
             - name: PEERTUBE_OBJECT_STORAGE_STREAMING_PLAYLISTS_BUCKET_NAME
               value: peertube-hsl
+
+            - name: PEERTUBE_OBJECT_STORAGE_STREAMING_PLAYLISTS_PREFIX
+              value: ""
+
+            - name: PEERTUBE_OBJECT_STORAGE_STREAMING_PLAYLISTS_BASE_URL
+              value: minio.helm
+
+
 
           livenessProbe:
             httpGet:

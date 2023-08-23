@@ -34,6 +34,16 @@ minio:
     - name: peertube-hls
       policy: none
 
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingressClassName: nginx
+    path: /
+    hosts:
+      - minio.helm
+      - peertube-web.minio.helm
+      - peertube-hls.minio.helm
+
 postgresql:
   enabled: true
   image:
