@@ -17,10 +17,12 @@ helm-dep-update:
 
 install:
 	helm upgrade --wait --install peertube . -f tests/values.yaml
+	k apply -f tests/k8s || true
 
 uninstall:
 	helm uninstall peertube || true
 	kubectl delete pvc data-peertube-postgresql-0 || true
+	k delete -f tests/k8s || true
 
 minio-forward:
 	kubectl port-forward svc/peertube-minio-console 9001:9001

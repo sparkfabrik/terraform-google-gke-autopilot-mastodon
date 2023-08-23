@@ -20,10 +20,13 @@ minio:
   # login issue with port-forward: https://github.com/minio/console/issues/2539
   environment:
     MINIO_BROWSER_LOGIN_ANIMATION: "off"
+    MINIO_DOMAIN: default.svc.cluster.local
   resources:
     requests:
       memory: 256Mi
       cpu: 250m
+  service:
+    port: 8080
   users:
     - accessKey: 1234qwer
       secretKey: 1234qwer
@@ -40,9 +43,8 @@ minio:
       kubernetes.io/ingressClassName: nginx
     path: /
     hosts:
-      - minio.helm
-      - peertube-web.minio.helm
-      - peertube-hls.minio.helm
+      - peertube-web.default.svc.cluster.local
+      - peertube-hls.default.svc.cluster.local
 
 postgresql:
   enabled: true
@@ -61,3 +63,15 @@ postgresql:
         01_create_extensions.sql: |
           CREATE EXTENSION pg_trgm;
           CREATE EXTENSION unaccent;
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+  hosts:
+    - host: peertube.default.svc.cluster.local
+      paths:
+        - path: /
+          pathType: Prefix
