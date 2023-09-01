@@ -34,7 +34,7 @@ resource "google_compute_address" "cloud_nat_ip" {
 
 module "cloud_nat" {
   source            = "terraform-google-modules/cloud-nat/google"
-  version           = "~> 2.2.1"
+  version           = "~> 4.1.0"
   name              = "${var.name}-cloud-nat"
   project_id        = module.enabled_google_apis.project_id
   region            = var.region
