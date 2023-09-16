@@ -201,80 +201,80 @@ variable "cloudsql_pgsql_version" {
 }
 
 # Mastodon instance.
-variable "app_keys" {
+variable "mastodon_keys" {
   type        = set(string)
   description = "Mastodon secret keys"
   default     = (["secret_key_base", "otp_secret"])
 }
 
-variable "app_create_admin" {
+variable "mastodon_create_admin" {
   type        = bool
   description = "Create admin account"
   default     = false
 }
 
-variable "app_admin_email" {
+variable "mastodon_admin_email" {
   type        = string
   description = "Admin email"
   default     = "not@localhost"
 }
 
-variable "app_admin_username" {
+variable "mastodon_admin_username" {
   type        = string
   description = "Admin username"
   default     = "not_gargron"
 }
 
-variable "app_locale" {
+variable "mastodon_locale" {
   type        = string
   description = "Mastodon locale"
   default     = "en"
 }
 
-variable "app_s3_existing_secret" {
+variable "mastodon_s3_existing_secret" {
   type        = string
   description = "S3 existing secret name"
   default     = null
 }
 
-variable "app_smtp_username" {
+variable "mastodon_smtp_username" {
   type        = string
   description = "SMTP username"
   default     = null
 }
 
-variable "app_smtp_password" {
+variable "mastodon_smtp_password" {
   type        = string
   description = "SMTP password"
   default     = null
   sensitive   = true
 }
 
-variable "app_smtp_existing_secret" {
+variable "mastodon_smtp_existing_secret" {
   type        = string
   description = "SMTP existing secret name"
   default     = null
 }
 
-variable "app_existing_secret_name" {
+variable "mastodon_existing_secret_name" {
   type        = string
   description = "Mastodon existing secret name"
   default     = null
 }
 
-variable "app_vapid_public_key" {
+variable "mastodon_vapid_public_key" {
   type        = string
   description = "Mastodon vapid public key"
   default     = null
 }
 
-variable "app_vapid_private_key" {
+variable "mastodon_vapid_private_key" {
   type        = string
   description = "Mastodon vapid private key"
   default     = null
 }
 
-variable "app_helm_additional_values" {
+variable "mastodon_helm_additional_values" {
   type        = string
   description = "Additional values to pass to the helm"
   default     = ""
