@@ -13,7 +13,7 @@ locals {
 
 module "gke" {
   source                          = "terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster"
-  version                         = "~> 27.0.0"
+  version                         = "~> 28.0.0"
   project_id                      = var.project_id
   name                            = "${var.name}-gke"
   region                          = var.region
