@@ -18,7 +18,7 @@ resource "google_service_networking_connection" "private_vpc_connection" {
 
 module "sql_db" {
   source              = "GoogleCloudPlatform/sql-db/google//modules/postgresql"
-  version             = "13.0.1"
+  version             = "18.2.0"
   name                = "${var.name}-db"
   database_version    = var.cloudsql_pgsql_version
   project_id          = var.project_id
