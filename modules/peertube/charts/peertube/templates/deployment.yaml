@@ -1,0 +1,145 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "peertube.fullname" . }}
+  labels:
+    {{- include "peertube.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "peertube.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "peertube.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "peertube.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:v{{ .Values.image.tag | default .Chart.AppVersion }}-bullseye"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 9000
+              name: peertube
+          # https://docs.joinpeertube.org/install/any-os#peertube-configuration
+          # https://github.com/Chocobozzz/PeerTube/blob/develop/support/docker/production/.env
+          # https://github.com/Chocobozzz/PeerTube/blob/master/support/docker/production/config/custom-environment-variables.yaml
+
+          # HELM CHART: https://github.com/coopgo/peertube-k8s
+          env:
+            - name: PEERTUBE_SECRET
+              # TODO: generate a random secret with "openssl rand -hex 32"
+              value: "fc3f91957b7814654737e9da525bf0c997a8f862589b0a3f2fb7e3823bbc1090"
+
+            - name: PEERTUBE_DB_HOSTNAME
+              value: {{ .Release.Name }}-postgresql
+            - name: POSTGRES_USER
+              value: peertube
+            - name: POSTGRES_PASSWORD
+              value: peertube
+            - name: PEERTUBE_DB_USERNAME
+              value: peertube
+            - name: PEERTUBE_DB_PASSWORD
+              value: peertube
+            - name: POSTGRES_DB
+              value: peertube
+            - name: PEERTUBE_DB_SSL
+              value: "false"
+
+            - name: PEERTUBE_ADMIN_EMAIL
+              value: peertube@example.com
+
+            - name: PEERTUBE_REDIS_HOSTNAME
+              value: {{ .Release.Name }}-redis-master
+
+            - name: PEERTUBE_REDIS_AUTH
+              value: "peertube"
+
+            - name: PEERTUBE_WEBSERVER_HOSTNAME
+              value: peertube.default.svc.cluster.local
+
+            - name: PEERTUBE_WEBSERVER_PORT
+              value: "8080"
+
+            - name: PEERTUBE_WEBSERVER_HTTPS
+              value: "false"
+
+            # Object storage.
+            - name: PEERTUBE_OBJECT_STORAGE_ENABLED
+              value: "true"
+
+            - name: PEERTUBE_OBJECT_STORAGE_ENDPOINT
+              value: "http://default.svc.cluster.local:8080"
+
+            - name: "PEERTUBE_OBJECT_STORAGE_REGION"
+              value: ""
+
+            - name: AWS_ACCESS_KEY_ID
+              value: "1234qwer"
+
+            - name: AWS_SECRET_ACCESS_KEY
+              value: "1234qwer"
+
+            - name: PEERTUBE_OBJECT_STORAGE_VIDEOS_BUCKET_NAME
+              value: peertube-web
+
+            - name: PEERTUBE_OBJECT_STORAGE_VIDEOS_PREFIX
+              value: ""
+
+          #  - name: PEERTUBE_OBJECT_STORAGE_VIDEOS_BASE_URL
+          #    value: minio.helm
+
+            - name: PEERTUBE_OBJECT_STORAGE_STREAMING_PLAYLISTS_BUCKET_NAME
+              value: peertube-hls
+
+            - name: PEERTUBE_OBJECT_STORAGE_STREAMING_PLAYLISTS_PREFIX
+              value: ""
+
+          #  - name: PEERTUBE_OBJECT_STORAGE_STREAMING_PLAYLISTS_BASE_URL
+          #    value: minio.helm
+
+            # See issues: https://github.com/Chocobozzz/PeerTube/issues/5479
+            #             https://framacolibri.org/t/peertube-is-broken-with-minio/16663/2
+            - name: PEERTUBE_OBJECT_STORAGE_UPLOAD_ACL_PUBLIC
+              value: ""
+
+            - name: PEERTUBE_OBJECT_STORAGE_UPLOAD_ACL_PRIVATE
+              value: ""
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: peertube
+          readinessProbe:
+            httpGet:
+              path: /
+              port: peertube
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

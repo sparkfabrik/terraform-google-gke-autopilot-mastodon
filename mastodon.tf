@@ -2,25 +2,25 @@ locals {
   mastodon_release_helm_values = templatefile(
     "${path.module}/helm/values.yaml",
     {
-      MASTODON_CREATE_ADMIN : var.app_create_admin
-      MASTODON_ADMIN_USERNAME : var.app_admin_username
-      MASTODON_ADMIN_EMAIL : var.app_admin_email
-      MASTODON_LOCALE : var.app_locale
+      MASTODON_CREATE_ADMIN : var.mastodon_create_admin
+      MASTODON_ADMIN_USERNAME : var.mastodon_admin_username
+      MASTODON_ADMIN_EMAIL : var.mastodon_admin_email
+      MASTODON_LOCALE : var.mastodon_locale
       MASTODON_LOCAL_DOMAIN : var.domain
-      MASTODON_S3_EXISTING_SECRET : var.app_s3_existing_secret != null ? var.app_s3_existing_secret : kubernetes_secret.s3_secret.metadata[0].name
+      MASTODON_S3_EXISTING_SECRET : var.mastodon_s3_existing_secret != null ? var.mastodon_s3_existing_secret : kubernetes_secret.s3_secret.metadata[0].name
       MASTODON_S3_BUCKET_NAME : google_storage_bucket.bucket.name
-      MASTODON_SMTP_EXISTING_SECRET : var.app_smtp_existing_secret != null ? var.app_smtp_existing_secret : kubernetes_secret.mastodon_smtp_secret[0].metadata[0].name
+      MASTODON_SMTP_EXISTING_SECRET : var.mastodon_smtp_existing_secret != null ? var.mastodon_smtp_existing_secret : kubernetes_secret.mastodon_smtp_secret[0].metadata[0].name
       MASTODON_SECRET_KEY_BASE : local.mastodon_secrets["SECRET_KEY_BASE"]
       MASTODON_OTP_SECRET : local.mastodon_secrets["OTP_SECRET"]
-      MASTODON_VAPID_PUBLIC_KEY : var.app_vapid_public_key
-      MASTODON_VAPID_PRIVATE_KEY : var.app_vapid_private_key
+      MASTODON_VAPID_PUBLIC_KEY : var.mastodon_vapid_public_key
+      MASTODON_VAPID_PRIVATE_KEY : var.mastodon_vapid_private_key
       MASTODON_POSTGRES_HOST : module.sql_db.private_ip_address
       MASTODON_POSTGRES_USER : "mastodon"
       MASTODON_POSTGRES_DB : "mastodon"
       MASTODON_POSTGRES_SECRET_NAME : local.sql_k8s_secret_name
       MASTODON_GLOBAL_IP_NAME : local.mastodon_gcp_app_lb_ip_name
       MASTODON_REDIS_ENABLED : var.memorystore_redis_enabled ? "false" : "true"
-      MASTODON_REDIS_HOSTNAME : var.memorystore_redis_enabled ? google_redis_instance.mastodon_redis[0].host : ""
+      MASTODON_REDIS_HOSTNAME : var.memorystore_redis_enabled ? google_redis_instance.fediverse_redis[0].host : ""
       MASTODON_REDIS_SECRET_NAME : var.memorystore_redis_enabled ? kubernetes_secret.mastodon_memorystore_redis_secret[0].metadata[0].name : kubernetes_secret.mastodon_redis_secret[0].metadata[0].name
       NAME : var.name
     }
@@ -43,13 +43,13 @@ locals {
 
 # Mastodon secrets.
 resource "random_password" "mastodon_secrets_random" {
-  for_each = var.app_keys
+  for_each = var.mastodon_keys
   length   = 64
   special  = false
 }
 
 resource "google_secret_manager_secret" "mastodon_secrets" {
-  for_each  = var.app_keys
+  for_each  = var.mastodon_keys
   project   = var.project_id
   secret_id = format("%s-%s", var.name, each.key)
 
@@ -63,7 +63,7 @@ resource "google_secret_manager_secret" "mastodon_secrets" {
 }
 
 resource "google_secret_manager_secret_version" "mastodon_secrets_values" {
-  for_each    = var.app_keys
+  for_each    = var.mastodon_keys
   secret      = google_secret_manager_secret.mastodon_secrets[each.key].id
   secret_data = random_password.mastodon_secrets_random[each.key].result
 }
@@ -84,7 +84,7 @@ resource "kubernetes_secret" "mastodon_memorystore_redis_secret" {
     name      = local.redis_k8s_secret_name
     namespace = kubernetes_namespace.mastodon.id
   }
-  data       = { redis-password = google_redis_instance.mastodon_redis[0].auth_string }
+  data       = { redis-password = google_redis_instance.fediverse_redis[0].auth_string }
   depends_on = [kubernetes_namespace.mastodon]
 }
 
@@ -111,7 +111,7 @@ resource "helm_release" "mastodon" {
   chart             = "mastodon"
   dependency_update = true # TODO: Remove this once the public chart is updated
   timeout           = 1800
-  values            = trimspace(var.app_helm_additional_values) != "" ? [local.mastodon_release_helm_values, var.app_helm_additional_values] : [local.mastodon_release_helm_values]
+  values            = trimspace(var.mastodon_helm_additional_values) != "" ? [local.mastodon_release_helm_values, var.mastodon_helm_additional_values] : [local.mastodon_release_helm_values]
   depends_on = [
     module.gke,
     module.sql_db
@@ -128,14 +128,14 @@ resource "kubectl_manifest" "gcp_managed_cert" {
 
 # Create smtp secret.
 resource "kubernetes_secret" "mastodon_smtp_secret" {
-  count = var.app_smtp_username != null && var.app_smtp_password != null ? 1 : 0
+  count = var.mastodon_smtp_username != null && var.mastodon_smtp_password != null ? 1 : 0
   metadata {
     name      = local.smtp_k8s_secret_name
     namespace = kubernetes_namespace.mastodon.id
   }
   data = {
-    username = var.app_smtp_username
-    password = var.app_smtp_password
+    username = var.mastodon_smtp_username
+    password = var.mastodon_smtp_password
   }
   depends_on = [kubernetes_namespace.mastodon]
 }

@@ -1,3 +1,8 @@
+output "region" {
+  value       = var.region
+  description = "Mastodon cloud region"
+}
+
 output "bucket_name" {
   value       = google_storage_bucket.bucket.name
   description = "Mastodon bucket name"
@@ -36,4 +41,14 @@ output "gke_min_master_version" {
 output "gke_service_account" {
   value       = module.gke.service_account
   description = "Mastodon GKE service account"
+}
+
+output "cluster_name" {
+  value       = module.gke.name
+  description = "Mastodon GKE cluster name"
+}
+
+output "cloudsql_instance_name" {
+  value       = module.sql_db.instance_name
+  description = "Mastodon CloudSQL DB instance name"
 }

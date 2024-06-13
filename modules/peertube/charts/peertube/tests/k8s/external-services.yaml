@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: peertube-web
+spec:
+  type: ExternalName
+  externalName: peertube-minio.default.svc.cluster.local
+  ports:
+    - port: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: peertube-hls
+spec:
+  type: ExternalName
+  externalName: peertube-minio.default.svc.cluster.local
+  ports:
+    - port: 80
