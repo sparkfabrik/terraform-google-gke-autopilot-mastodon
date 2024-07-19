@@ -22,6 +22,7 @@ locals {
       MASTODON_REDIS_ENABLED : var.memorystore_redis_enabled ? "false" : "true"
       MASTODON_REDIS_HOSTNAME : var.memorystore_redis_enabled ? google_redis_instance.mastodon_redis[0].host : ""
       MASTODON_REDIS_SECRET_NAME : var.memorystore_redis_enabled ? kubernetes_secret.mastodon_memorystore_redis_secret[0].metadata[0].name : kubernetes_secret.mastodon_redis_secret[0].metadata[0].name
+      MASTODON_TRUSTED_PROXY_IP : google_compute_global_address.app_lb_ip.address
       NAME : var.name
     }
   )

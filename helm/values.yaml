@@ -19,6 +19,7 @@ mastodon:
     vapid:
       private_key: ${MASTODON_VAPID_PRIVATE_KEY}
       public_key: ${MASTODON_VAPID_PUBLIC_KEY}
+  trusted_proxy_ip: ${MASTODON_TRUSTED_PROXY_IP}
   streaming:
     replicas: 2
   web:
