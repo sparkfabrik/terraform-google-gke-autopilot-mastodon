@@ -19,7 +19,8 @@ mastodon:
     vapid:
       private_key: ${MASTODON_VAPID_PRIVATE_KEY}
       public_key: ${MASTODON_VAPID_PUBLIC_KEY}
-  trusted_proxy_ip: ${MASTODON_TRUSTED_PROXY_IP}
+  # Always trust GCP GFE ips: https://cloud.google.com/load-balancing/docs/https
+  trusted_proxy_ip: ${MASTODON_TRUSTED_PROXY_IP},130.211.0.0/22,35.191.0.0/16
   streaming:
     replicas: 2
   web:
