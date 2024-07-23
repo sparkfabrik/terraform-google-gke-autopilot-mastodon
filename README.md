@@ -3,7 +3,8 @@
 
 [![Lint](https://github.com/sparkfabrik/terraform-sparkfabrik-gke-autopilot-mastodon/actions/workflows/tflint.yml/badge.svg)](https://github.com/sparkfabrik/terraform-sparkfabrik-gke-autopilot-mastodon/actions/workflows/tflint.yml)
 
-This is a Terraform module to install and configure a Mastodon instance in a GKE Autopilot cluster.
+This is a Terraform module to install and configure a Mastodon instance in a GKE Autopilot cluster
+using the official [GitLab Runner Helm Chart](https://gitlab.com/gitlab-org/charts/gitlab-runner).
 
 This module is provided without any kind of warranty and is AGPL3 licensed.
 
@@ -45,8 +46,8 @@ For a total of:
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | >= 4.51.0, < 5.0, !=4.65.0, !=4.65.1 |
-| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | >= 4.51.0, < 5.0, !=4.65.0, !=4.65.1 |
+| <a name="provider_google"></a> [google](#provider\_google) | >= 5.0 |
+| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | >= 5.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | >= 2.10.1 |
 | <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | >= 1.14.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | >= 2.22 |
@@ -56,8 +57,8 @@ For a total of:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.51.0, < 5.0, !=4.65.0, !=4.65.1 |
-| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | >= 4.51.0, < 5.0, !=4.65.0, !=4.65.1 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | >= 5.0 |
+| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | >= 5.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.10.1 |
 | <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | >= 1.14.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.22 |
@@ -105,7 +106,6 @@ For a total of:
 | <a name="input_gke_workload_config_audit_mode"></a> [gke\_workload\_config\_audit\_mode](#input\_gke\_workload\_config\_audit\_mode) | The mode for workload identity config audit | `string` | `""` | no |
 | <a name="input_gke_workload_vulnerability_mode"></a> [gke\_workload\_vulnerability\_mode](#input\_gke\_workload\_vulnerability\_mode) | The mode for workload identity vulnerability | `string` | `""` | no |
 | <a name="input_gke_zone"></a> [gke\_zone](#input\_gke\_zone) | gke\_zone within the region to use this cluster | `list(any)` | <pre>[<br>  "europe-west1-b"<br>]</pre> | no |
-| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | The version of the helm chart to use | `string` | `"3.0.0"` | no |
 | <a name="input_kubernetes_namespace"></a> [kubernetes\_namespace](#input\_kubernetes\_namespace) | The name of the namespace to deploy the application in | `string` | `"mastodon"` | no |
 | <a name="input_memorystore_redis_enabled"></a> [memorystore\_redis\_enabled](#input\_memorystore\_redis\_enabled) | Enable memorystore redis | `bool` | `true` | no |
 | <a name="input_memorystore_redis_size"></a> [memorystore\_redis\_size](#input\_memorystore\_redis\_size) | The size of the redis instance | `string` | `"1"` | no |
@@ -161,11 +161,11 @@ For a total of:
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cloud_nat"></a> [cloud\_nat](#module\_cloud\_nat) | terraform-google-modules/cloud-nat/google | 2.2.1 |
-| <a name="module_enabled_google_apis"></a> [enabled\_google\_apis](#module\_enabled\_google\_apis) | terraform-google-modules/project-factory/google//modules/project_services | 14.1.0 |
+| <a name="module_cloud_nat"></a> [cloud\_nat](#module\_cloud\_nat) | terraform-google-modules/cloud-nat/google | ~> 2.2.1 |
+| <a name="module_enabled_google_apis"></a> [enabled\_google\_apis](#module\_enabled\_google\_apis) | terraform-google-modules/project-factory/google//modules/project_services | 14.3.0 |
 | <a name="module_gke"></a> [gke](#module\_gke) | terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-private-cluster | ~> 27.0.0 |
-| <a name="module_mastodon_db_pass"></a> [mastodon\_db\_pass](#module\_mastodon\_db\_pass) | sparkfabrik/gke-gitlab/sparkfabrik//modules/secret_manager | 2.14.0 |
+| <a name="module_mastodon_db_pass"></a> [mastodon\_db\_pass](#module\_mastodon\_db\_pass) | sparkfabrik/gke-gitlab/sparkfabrik//modules/secret_manager | 2.17.1 |
 | <a name="module_sql_db"></a> [sql\_db](#module\_sql\_db) | GoogleCloudPlatform/sql-db/google//modules/postgresql | 13.0.1 |
-| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-google-modules/network/google | 6.0.1 |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-google-modules/network/google | ~> 6.0.1 |
 
 <!-- END_TF_DOCS -->
